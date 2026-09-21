@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head"></head>
+
+<body>
+
+<!-- Sidebar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- Main Content -->
+<div class="main">
+
+    <!-- Header -->
+    <div class="header">
+
+        <h3>Edit Restaurant Table</h3>
+
+        <div>
+
+            <a th:href="@{/table/list}" class="btn btn-light">
+
+                <i class="fa-solid fa-list"></i>
+
+                Table List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Content -->
+
+    <div class="content">
+
+        <div class="container-fluid">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8">
+
+                    <div class="card shadow border-0 rounded-4">
+
+                        <div class="card-header bg-warning">
+
+                            <h4 class="mb-0">
+
+                                <i class="fa-solid fa-pen-to-square"></i>
+
+                                Edit Restaurant Table
+
+                            </h4>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <form
+                                    th:action="@{/table/update}"
+                                    th:object="${restaurantTable}"
+                                    method="post">
+
+                                <!-- Hidden Id -->
+
+                                <input
+                                        type="hidden"
+                                        th:field="*{id}">
+
+                                <!-- Table Number -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Table Number
+
+                                    </label>
+
+                                    <input
+                                            type="number"
+                                            class="form-control"
+                                            th:field="*{tableNumber}">
+
+                                    <div class="text-danger"
+                                         th:if="${#fields.hasErrors('tableNumber')}"
+                                         th:errors="*{tableNumber}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Capacity -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Seating Capacity
+
+                                    </label>
+
+                                    <input
+                                            type="number"
+                                            class="form-control"
+                                            th:field="*{capacity}">
+
+                                    <div class="text-danger"
+                                         th:if="${#fields.hasErrors('capacity')}"
+                                         th:errors="*{capacity}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Status -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Status
+
+                                    </label>
+
+                                    <select
+                                            class="form-select"
+                                            th:field="*{status}">
+
+                                        <option value="AVAILABLE">Available</option>
+
+                                        <option value="OCCUPIED">Occupied</option>
+
+                                        <option value="RESERVED">Reserved</option>
+
+                                    </select>
+
+                                </div>
+
+                                <!-- Active -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label">
+
+                                        Active
+
+                                    </label>
+
+                                    <br>
+
+                                    <div class="form-check form-check-inline">
+
+                                        <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                th:field="*{active}"
+                                                value="true">
+
+                                        <label class="form-check-label">
+
+                                            Active
+
+                                        </label>
+
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+
+                                        <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                th:field="*{active}"
+                                                value="false">
+
+                                        <label class="form-check-label">
+
+                                            Inactive
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- QR Preview -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label">
+
+                                        QR Code
+
+                                    </label>
+
+                                    <br>
+
+                                    <img
+                                            th:if="${restaurantTable.qrCodeImage!=null}"
+                                            th:src="@{'/uploads/qr/'+${restaurantTable.qrCodeImage}}"
+                                            width="180"
+                                            class="img-thumbnail">
+
+                                </div>
+
+                                <!-- Buttons -->
+
+                                <div class="text-center">
+
+                                    <button
+                                            type="submit"
+                                            class="btn btn-warning">
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                        Update Table
+
+                                    </button>
+
+                                    <a
+                                            th:href="@{/table/list}"
+                                            class="btn btn-secondary">
+
+                                        Cancel
+
+                                    </a>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head"></head>
+
+<body>
+
+	<!-- Sidebar -->
+	<div th:replace="fragments/navbar :: navbar"></div>
+
+	<!-- Main Content -->
+	<div class="main">
+
+		<!-- Header -->
+		<div class="header">
+
+			<h3>Menu Management</h3>
+
+			<div>
+
+				<a th:href="@{/menu/add}" class="btn btn-light">
+
+					<i class="fa-solid fa-plus"></i>
+
+					Add Menu
+
+				</a>
+
+			</div>
+
+		</div>
+
+		<!-- Content -->
+
+		<div class="content">
+
+			<div class="container-fluid">
+
+				<div class="card shadow border-0 rounded-4">
+
+					<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+						<h4 class="mb-0">
+
+							<i class="fa-solid fa-utensils"></i>
+
+							Menu List
+
+						</h4>
+
+						<span class="badge bg-light text-dark" th:text="'Total Menu : ' + ${#lists.size(menus)}">
+
+						</span>
+
+					</div>
+
+					<div class="card-body">
+
+						<div class="table-responsive">
+
+							<table class="table table-hover align-middle">
+
+								<thead>
+
+									<tr>
+
+										<th>ID</th>
+
+										<th>Image</th>
+
+										<th>Menu Name</th>
+
+										<th>Category</th>
+
+										<th>Price</th>
+
+										<th>Food Type</th>
+
+										<th>Status</th>
+
+										<th width="180">Action</th>
+
+									</tr>
+
+								</thead>
+
+								<tbody>
+
+									<tr th:each="menu : ${menus}">
+
+										<!-- ID -->
+
+										<td th:text="${menu.id}"></td>
+
+										<!-- Image -->
+
+										<td>
+
+											<img th:if="${menu.imageName != null}"
+												th:src="@{'/uploads/menu/' + ${menu.imageName}}" width="70" height="70"
+												style="object-fit:cover;border-radius:10px;">
+
+											<img th:unless="${menu.imageName != null}" th:src="@{/images/no-image.png}"
+												width="70" height="70" style="object-fit:cover;border-radius:10px;">
+
+										</td>
+
+										<!-- Menu -->
+
+										<td>
+
+											<strong th:text="${menu.name}">
+											</strong>
+
+											<br>
+
+											<small class="text-muted" th:text="${menu.description}">
+											</small>
+
+										</td>
+
+										<!-- Category -->
+
+										<td th:text="${menu.category.name}">
+										</td>
+
+										<!-- Price -->
+
+										<td>
+
+											₹
+											<span th:text="${menu.price}">
+											</span>
+
+										</td>
+
+										<!-- Veg -->
+
+										<td>
+
+											<span th:if="${menu.veg}" class="badge bg-success">
+
+												Veg
+
+											</span>
+
+											<span th:unless="${menu.veg}" class="badge bg-danger">
+
+												Non Veg
+
+											</span>
+
+										</td>
+
+										<!-- Status -->
+
+										<td>
+
+											<span th:if="${menu.available}" class="badge bg-primary">
+
+												Available
+
+											</span>
+
+											<span th:unless="${menu.available}" class="badge bg-secondary">
+
+												Unavailable
+
+											</span>
+
+										</td>
+
+										<!-- Action -->
+
+										<td>
+
+											<a th:href="@{'/menu/edit/' + ${menu.id}}" class="btn btn-warning btn-sm">
+
+												<i class="fa-solid fa-pen"></i>
+
+											</a>
+
+											<a th:href="@{'/menu/delete/' + ${menu.id}}"
+												onclick="return confirm('Delete this menu?')"
+												class="btn btn-danger btn-sm">
+
+												<i class="fa-solid fa-trash"></i>
+
+											</a>
+
+										</td>
+
+									</tr>
+
+									<tr th:if="${#lists.isEmpty(menus)}">
+
+										<td colspan="8" class="text-center text-muted">
+
+											No Menu Available
+
+										</td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Footer -->
+
+		<div th:replace="fragments/footer :: footer"></div>
+
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

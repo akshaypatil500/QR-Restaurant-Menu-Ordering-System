@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="sidebar">
+
+    <div class="sidebar">
+
+        <!-- Logo -->
+
+        <div class="logo">
+
+            🍽 QR Restaurant
+
+        </div>
+
+
+        <ul>
+
+            <!-- Dashboard -->
+
+            <li>
+
+                <a th:href="@{/dashboard}">
+
+                    🏠 Dashboard
+
+                </a>
+
+            </li>
+
+
+            <!-- Categories -->
+
+            <li>
+
+                <a th:href="@{/category/list}">
+
+                    📂 Categories
+
+                </a>
+
+            </li>
+
+
+            <!-- Add Category -->
+
+            <li>
+
+                <a th:href="@{/category/add}">
+
+                    ➕ Add Category
+
+                </a>
+
+            </li>
+
+
+            <!-- Menu -->
+
+            <li>
+
+                <a th:href="@{/menu/list}">
+
+                    🍽 Menu
+
+                </a>
+
+            </li>
+
+
+            <!-- Add Menu -->
+
+            <li>
+
+                <a th:href="@{/menu/add}">
+
+                    ➕ Add Menu
+
+                </a>
+
+            </li>
+
+
+            <!-- Orders -->
+
+            <li>
+
+                <a th:href="@{/order/list}">
+
+                    📦 Orders
+
+                </a>
+
+            </li>
+
+
+            <!-- Tables -->
+
+            <li>
+
+                <a th:href="@{/table/list}">
+
+                    🪑 Tables
+
+                </a>
+
+            </li>
+
+
+            <!-- QR Codes -->
+
+            <li>
+
+                <a th:href="@{/table/list}">
+
+                    📱 QR Codes
+
+                </a>
+
+            </li>
+
+
+            <!-- Bills -->
+
+            <li>
+
+                <a href="#">
+
+                    💳 Bills
+
+                </a>
+
+            </li>
+
+
+            <!-- Customers -->
+
+            <li>
+
+                <a href="#">
+
+                    👥 Customers
+
+                </a>
+
+            </li>
+
+
+            <!-- Settings -->
+
+            <li>
+
+                <a href="#">
+
+                    ⚙ Settings
+
+                </a>
+
+            </li>
+
+
+            <!-- Logout -->
+
+			<!-- Logout -->
+
+			<li>
+
+			    <form th:action="@{/logout}"
+			          method="post"
+			          style="margin: 0;">
+
+			        <input type="hidden"
+			               th:name="${_csrf.parameterName}"
+			               th:value="${_csrf.token}">
+
+			        <button type="submit"
+			                style="background: none;
+			                       border: none;
+			                       color: inherit;
+			                       width: 100%;
+			                       text-align: left;
+			                       padding: 10px 15px;
+			                       cursor: pointer;">
+
+			            🚪 Logout
+
+			        </button>
+
+			    </form>
+
+			</li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="main">
+
+    <!-- Header -->
+    <div class="header">
+
+        <h3>Add Menu</h3>
+
+        <div>
+
+            <a th:href="@{/menu/list}" class="btn btn-light">
+
+                <i class="fa-solid fa-list"></i>
+
+                Menu List
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Content -->
+
+    <div class="content">
+
+        <div class="container-fluid">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8">
+
+                    <div class="card shadow border-0 rounded-4">
+
+                        <div class="card-header bg-primary text-white">
+
+                            <h4 class="mb-0">
+
+                                <i class="fa-solid fa-bowl-food"></i>
+
+                                Add New Menu Item
+
+                            </h4>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <form th:action="@{/menu/save}"
+                                  th:object="${menu}"
+                                  method="post"
+                                  enctype="multipart/form-data">
+
+                                <!-- Menu Name -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Menu Name
+
+                                    </label>
+
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            th:field="*{name}"
+                                            placeholder="Enter Menu Name">
+
+                                    <div class="text-danger mt-1"
+                                         th:if="${#fields.hasErrors('name')}"
+                                         th:errors="*{name}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Description -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Description
+
+                                    </label>
+
+                                    <textarea
+                                            class="form-control"
+                                            rows="3"
+                                            th:field="*{description}"
+                                            placeholder="Enter Description">
+                                    </textarea>
+
+                                    <div class="text-danger mt-1"
+                                         th:if="${#fields.hasErrors('description')}"
+                                         th:errors="*{description}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Category -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Category
+
+                                    </label>
+
+                                    <select
+                                            class="form-select"
+                                            th:field="*{category.id}">
+
+                                        <option value="">
+
+                                            Select Category
+
+                                        </option>
+
+                                        <option
+                                                th:each="category : ${categories}"
+                                                th:value="${category.id}"
+                                                th:text="${category.name}">
+                                        </option>
+
+                                    </select>
+
+                                    <div class="text-danger mt-1"
+                                         th:if="${#fields.hasErrors('category')}"
+                                         th:errors="*{category}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Price -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Price (₹)
+
+                                    </label>
+
+                                    <input
+                                            type="number"
+                                            step="0.01"
+                                            class="form-control"
+                                            th:field="*{price}"
+                                            placeholder="Enter Price">
+
+                                    <div class="text-danger mt-1"
+                                         th:if="${#fields.hasErrors('price')}"
+                                         th:errors="*{price}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Food Type -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Food Type
+
+                                    </label>
+
+                                    <br>
+
+                                    <div class="form-check form-check-inline">
+
+                                        <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                th:field="*{veg}"
+                                                value="true">
+
+                                        <label class="form-check-label">
+
+                                            Veg
+
+                                        </label>
+
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+
+                                        <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                th:field="*{veg}"
+                                                value="false">
+
+                                        <label class="form-check-label">
+
+                                            Non Veg
+
+                                        </label>
+
+                                    </div>
+
+                                    <div class="text-danger mt-1"
+                                         th:if="${#fields.hasErrors('veg')}"
+                                         th:errors="*{veg}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Availability -->
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+
+                                        Availability
+
+                                    </label>
+
+                                    <br>
+
+                                    <div class="form-check form-check-inline">
+
+                                        <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                th:field="*{available}"
+                                                value="true">
+
+                                        <label class="form-check-label">
+
+                                            Available
+
+                                        </label>
+
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+
+                                        <input
+                                                class="form-check-input"
+                                                type="radio"
+                                                th:field="*{available}"
+                                                value="false">
+
+                                        <label class="form-check-label">
+
+                                            Unavailable
+
+                                        </label>
+
+                                    </div>
+
+                                    <div class="text-danger mt-1"
+                                         th:if="${#fields.hasErrors('available')}"
+                                         th:errors="*{available}">
+                                    </div>
+
+                                </div>
+
+                                <!-- Image -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label">
+
+                                        Food Image
+
+                                    </label>
+
+                                    <input
+                                            type="file"
+                                            class="form-control"
+                                            name="imageFile"
+                                            accept="image/*">
+
+                                </div>
+
+                                <!-- Buttons -->
+
+                                <div class="text-center">
+
+                                    <button
+                                            type="submit"
+                                            class="btn btn-primary">
+
+                                        <i class="fa-solid fa-floppy-disk"></i>
+
+                                        Save Menu
+
+                                    </button>
+
+                                    <button
+                                            type="reset"
+                                            class="btn btn-secondary">
+
+                                        Reset
+
+                                    </button>
+
+                                    <a
+                                            th:href="@{/menu/list}"
+                                            class="btn btn-success">
+
+                                        View Menu
+
+                                    </a>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

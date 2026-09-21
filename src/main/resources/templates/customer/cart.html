@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My Cart</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body style="background:#f5f7fb;">
+
+<div class="container py-4">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="text-primary">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            My Cart
+
+        </h2>
+
+        <a th:href="@{'/customer/menu/' + ${tableId}}"
+           class="btn btn-secondary">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back To Menu
+
+        </a>
+
+    </div>
+
+    <!-- Empty Cart -->
+
+    <div
+            th:if="${#lists.isEmpty(cartItems)}"
+            class="alert alert-warning text-center">
+
+        <h5>
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            Your Cart Is Empty
+
+        </h5>
+
+    </div>
+
+    <!-- Cart Items -->
+
+    <div
+            th:unless="${#lists.isEmpty(cartItems)}">
+
+        <table class="table table-bordered table-hover align-middle shadow">
+
+            <thead class="table-primary">
+
+            <tr>
+
+                <th>Image</th>
+
+                <th>Food</th>
+
+                <th>Price</th>
+
+                <th>Quantity</th>
+
+                <th>Total</th>
+
+                <th>Action</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="cart : ${cartItems}">
+
+                <!-- Image -->
+
+                <td width="120">
+
+                    <img
+                        th:if="${cart.menu.imageName!=null}"
+                        th:src="@{'/uploads/menu/' + ${cart.menu.imageName}}"
+                        width="100"
+                        height="80"
+                        style="object-fit:cover">
+
+                </td>
+
+                <!-- Name -->
+
+                <td>
+
+                    <b th:text="${cart.menu.name}"></b>
+
+                    <br>
+
+                    <small
+                        th:text="${cart.menu.description}">
+                    </small>
+
+                </td>
+
+                <!-- Price -->
+
+                <td>
+
+                    ₹ <span th:text="${cart.price}"></span>
+
+                </td>
+
+                <!-- Quantity -->
+
+                <td>
+
+                    <a
+                        th:href="@{'/cart/decrease/' + ${cart.id} + '/' + ${tableId}}"
+                        class="btn btn-sm btn-danger">
+
+                        -
+
+                    </a>
+
+                    <span
+                        class="mx-3 fw-bold"
+                        th:text="${cart.quantity}">
+                    </span>
+
+                    <a
+                        th:href="@{'/cart/increase/' + ${cart.id} + '/' + ${tableId}}"
+                        class="btn btn-sm btn-success">
+
+                        +
+
+                    </a>
+
+                </td>
+
+                <!-- Total -->
+
+                <td>
+
+                    ₹ <span th:text="${cart.totalPrice}"></span>
+
+                </td>
+
+                <!-- Remove -->
+
+                <td>
+
+                    <a
+                        th:href="@{'/cart/remove/' + ${cart.id} + '/' + ${tableId}}"
+                        class="btn btn-danger">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <!-- Grand Total -->
+
+        <div class="card shadow mt-4">
+
+            <div class="card-body text-end">
+
+                <h3>
+
+                    Grand Total :
+
+                    <span class="text-success">
+
+                        ₹ <span th:text="${grandTotal}"></span>
+
+                    </span>
+
+                </h3>
+
+                <a
+                    th:href="@{'/order/checkout/' + ${tableId}}"
+                    class="btn btn-primary btn-lg mt-3">
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Place Order
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

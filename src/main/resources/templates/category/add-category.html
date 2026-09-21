@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head"></head>
+
+<body>
+
+<!-- Sidebar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- Main Content -->
+<div class="main">
+
+    <!-- Header -->
+    <div class="header">
+
+        <h3>Add Category</h3>
+
+        <div>
+
+            <a th:href="@{/dashboard}" class="btn btn-light">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Page Content -->
+    <div class="content">
+
+        <div class="container-fluid">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-7">
+
+                    <div class="card shadow border-0 rounded-4">
+
+                        <div class="card-header bg-primary text-white">
+
+                            <h4 class="mb-0">
+
+                                <i class="fa-solid fa-folder-plus"></i>
+
+                                Add New Category
+
+                            </h4>
+
+                        </div>
+
+                        <div class="card-body p-4">
+
+                            <form
+                                    th:action="@{/category/save}"
+                                    th:object="${category}"
+                                    method="post">
+
+                                <!-- Category Name -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label">
+
+                                        Category Name
+
+                                    </label>
+
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            th:field="*{name}"
+                                            placeholder="Enter Category Name"
+                                            required>
+
+                                </div>
+
+                                <!-- Description -->
+
+                                <div class="mb-4">
+
+                                    <label class="form-label">
+
+                                        Description
+
+                                    </label>
+
+                                    <textarea
+
+                                            class="form-control"
+
+                                            rows="4"
+
+                                            th:field="*{description}"
+
+                                            placeholder="Enter Description">
+
+                                    </textarea>
+
+                                </div>
+
+                                <!-- Buttons -->
+
+                                <div class="text-center">
+
+                                    <button
+                                            class="btn btn-primary px-4"
+                                            type="submit">
+
+                                        <i class="fa-solid fa-floppy-disk"></i>
+
+                                        Save Category
+
+                                    </button>
+
+                                    <button
+                                            type="reset"
+                                            class="btn btn-secondary px-4">
+
+                                        Reset
+
+                                    </button>
+
+                                    <a
+                                            th:href="@{/category/list}"
+                                            class="btn btn-success px-4">
+
+                                        View Categories
+
+                                    </a>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+
+    <div th:replace="fragments/footer :: footer"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

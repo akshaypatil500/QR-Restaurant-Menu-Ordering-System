@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="navbar">
+
+    <div class="sidebar">
+
+        <!-- Logo -->
+        <div class="logo">
+
+            <i class="fa-solid fa-utensils"></i>
+
+            <span class="ms-2">
+                QR Restaurant
+            </span>
+
+        </div>
+
+        <!-- Menu -->
+
+        <ul>
+
+            <li>
+
+                <a th:href="@{/dashboard}">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/category/list}">
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    Categories
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/category/add}">
+
+                    <i class="fa-solid fa-folder-plus"></i>
+
+                    Add Category
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/menu/list}">
+
+                    <i class="fa-solid fa-bowl-food"></i>
+
+                    Menu
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/menu/add}">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Menu
+
+                </a>
+
+            </li>
+
+            <li>
+				<a th:href="@{/order/list}">
+				    <i class="fa-solid fa-cart-shopping"></i>
+				    Orders
+				</a>
+
+            </li>
+
+            <li>
+
+				<a th:href="@{/table/list}">
+				    <i class="fa-solid fa-chair"></i>
+				    Tables
+				</a>
+
+            </li>
+
+            <li>
+
+				<li>
+				    <a th:href="@{/table/list}">
+				        <i class="fa-solid fa-qrcode"></i>
+				        QR Codes
+				    </a>
+				</li>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    Bills
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Customers
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Settings
+
+                </a>
+
+            </li>
+
+			<li>
+
+			    <form th:action="@{/logout}"
+			          method="post"
+			          style="margin: 0;">
+
+			        <input type="hidden"
+			               th:name="${_csrf.parameterName}"
+			               th:value="${_csrf.token}">
+
+			        <button type="submit"
+			                style="background: none;
+			                       border: none;
+			                       color: inherit;
+			                       width: 100%;
+			                       text-align: left;
+			                       padding: 10px 15px;
+			                       cursor: pointer;">
+
+			            <i class="fa-solid fa-right-from-bracket"></i>
+
+			            Logout
+
+			        </button>
+
+			    </form>
+
+			</li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

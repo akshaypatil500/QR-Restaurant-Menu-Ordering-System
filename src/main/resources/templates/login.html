@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login - QR Restaurant</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container">
+
+    <div class="row justify-content-center align-items-center"
+         style="min-height: 100vh;">
+
+        <div class="col-md-5">
+
+            <div class="card shadow">
+
+                <div class="card-body p-4">
+
+                    <h3 class="text-center mb-4">
+                        QR Restaurant
+                    </h3>
+
+                    <h5 class="text-center mb-4">
+                        Login
+                    </h5>
+
+                    <!-- Login Error -->
+
+                    <div th:if="${param.error}"
+                         class="alert alert-danger">
+
+                        Invalid username or password.
+
+                    </div>
+
+                    <!-- Logout Message -->
+
+                    <div th:if="${param.logout}"
+                         class="alert alert-success">
+
+                        You have been logged out successfully.
+
+                    </div>
+
+                    <!-- Login Form -->
+
+                    <form th:action="@{/login}"
+                          method="post">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                class="form-control"
+                                placeholder="Enter username"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Enter password"
+                                required>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-dark w-100">
+
+                            Login
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
