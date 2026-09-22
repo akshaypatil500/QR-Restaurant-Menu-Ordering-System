@@ -20,6 +20,7 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+
     <style>
 
         body {
@@ -60,28 +61,40 @@
 
 </head>
 
+
 <body>
 
 <div class="container py-4">
 
+
     <!-- Header -->
+
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
+
             <h2 class="page-title">
+
                 <i class="fa-solid fa-receipt"></i>
+
                 Order Details
+
             </h2>
 
             <p class="text-muted mb-0">
+
                 View order information and update order status
+
             </p>
+
         </div>
+
 
         <a th:href="@{/order/list}"
            class="btn btn-secondary">
 
             <i class="fa-solid fa-arrow-left"></i>
+
             Back to Orders
 
         </a>
@@ -89,92 +102,133 @@
     </div>
 
 
+
     <!-- Order Information -->
+
     <div class="card order-card mb-4">
 
         <div class="card-body">
 
             <div class="row">
 
+
                 <!-- Order ID -->
+
                 <div class="col-md-3 mb-3">
 
                     <div class="info-label">
+
                         Order ID
+
                     </div>
 
                     <div class="fs-5 fw-bold"
                          th:text="${order.id}">
+
                     </div>
 
                 </div>
 
 
+
                 <!-- Table Number -->
+
                 <div class="col-md-3 mb-3">
 
                     <div class="info-label">
+
                         Table Number
+
                     </div>
 
                     <div class="fs-5 fw-bold"
                          th:text="${order.table.tableNumber}">
+
                     </div>
 
                 </div>
 
 
+
                 <!-- Order Date -->
+
                 <div class="col-md-3 mb-3">
 
                     <div class="info-label">
+
                         Order Date
+
                     </div>
 
                     <div class="fs-6"
                          th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">
+
                     </div>
 
                 </div>
 
 
+
                 <!-- Status -->
+
                 <div class="col-md-3 mb-3">
 
                     <div class="info-label">
+
                         Current Status
+
                     </div>
+
 
                     <div>
 
-                        <span
-                            th:if="${order.status == 'Pending'}"
-                            class="badge bg-warning text-dark">
+                        <!-- Pending -->
+
+                        <span th:if="${order.status.name() == 'PENDING'}"
+                              class="badge bg-warning text-dark">
+
                             Pending
+
                         </span>
 
-                        <span
-                            th:if="${order.status == 'Preparing'}"
-                            class="badge bg-primary">
+
+                        <!-- Preparing -->
+
+                        <span th:if="${order.status.name() == 'PREPARING'}"
+                              class="badge bg-primary">
+
                             Preparing
+
                         </span>
 
-                        <span
-                            th:if="${order.status == 'Ready'}"
-                            class="badge bg-success">
+
+                        <!-- Ready -->
+
+                        <span th:if="${order.status.name() == 'READY'}"
+                              class="badge bg-success">
+
                             Ready
+
                         </span>
 
-                        <span
-                            th:if="${order.status == 'Served'}"
-                            class="badge bg-info text-dark">
+
+                        <!-- Served -->
+
+                        <span th:if="${order.status.name() == 'SERVED'}"
+                              class="badge bg-info text-dark">
+
                             Served
+
                         </span>
 
-                        <span
-                            th:if="${order.status == 'Paid'}"
-                            class="badge bg-dark">
+
+                        <!-- Paid -->
+
+                        <span th:if="${order.status.name() == 'PAID'}"
+                              class="badge bg-dark">
+
                             Paid
+
                         </span>
 
                     </div>
@@ -188,7 +242,9 @@
     </div>
 
 
+
     <!-- Order Items -->
+
     <div class="card order-card mb-4">
 
         <div class="card-header bg-white">
@@ -196,6 +252,7 @@
             <h5 class="mb-0">
 
                 <i class="fa-solid fa-utensils"></i>
+
                 Ordered Items
 
             </h5>
@@ -211,88 +268,106 @@
 
                     <thead class="table-light">
 
-                        <tr>
+                    <tr>
 
-                            <th>#</th>
+                        <th>#</th>
 
-                            <th>Food</th>
+                        <th>Food</th>
 
-                            <th>Price</th>
+                        <th>Price</th>
 
-                            <th>Quantity</th>
+                        <th>Quantity</th>
 
-                            <th>Total</th>
+                        <th>Total</th>
 
-                        </tr>
+                    </tr>
 
                     </thead>
 
 
                     <tbody>
 
-                        <tr th:each="item, stat : ${items}">
-
-                            <!-- Sr No -->
-                            <td th:text="${stat.count}">
-                            </td>
+                    <tr th:each="item, stat : ${items}">
 
 
-                            <!-- Food Name -->
-                            <td>
+                        <!-- Sr No -->
 
-                                <span
-                                    th:text="${item.menu.name}"
-                                    class="fw-semibold">
-                                </span>
+                        <td th:text="${stat.count}">
 
-                            </td>
+                        </td>
 
 
-                            <!-- Price -->
-                            <td>
 
-                                ₹<span
-                                    th:text="${item.price}">
-                                </span>
+                        <!-- Food Name -->
 
-                            </td>
+                        <td>
 
+                            <span
+                                th:text="${item.menu.name}"
+                                class="fw-semibold">
 
-                            <!-- Quantity -->
-                            <td>
+                            </span>
 
-                                <span
-                                    class="badge bg-secondary"
-                                    th:text="${item.quantity}">
-                                </span>
-
-                            </td>
+                        </td>
 
 
-                            <!-- Total -->
-                            <td class="fw-semibold">
 
-                                ₹<span
-                                    th:text="${item.totalPrice}">
-                                </span>
+                        <!-- Price -->
 
-                            </td>
+                        <td>
 
-                        </tr>
+                            ₹<span
+                                th:text="${item.price}">
+
+                            </span>
+
+                        </td>
 
 
-                        <!-- Empty Items -->
-                        <tr th:if="${#lists.isEmpty(items)}">
 
-                            <td colspan="5"
-                                class="text-center text-muted py-4">
+                        <!-- Quantity -->
 
-                                <i class="fa-solid fa-circle-info"></i>
-                                No items found for this order.
+                        <td>
 
-                            </td>
+                            <span
+                                class="badge bg-secondary"
+                                th:text="${item.quantity}">
 
-                        </tr>
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- Total -->
+
+                        <td class="fw-semibold">
+
+                            ₹<span
+                                th:text="${item.totalPrice}">
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- Empty Items -->
+
+                    <tr th:if="${#lists.isEmpty(items)}">
+
+                        <td colspan="5"
+                            class="text-center text-muted py-4">
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            No items found for this order.
+
+                        </td>
+
+                    </tr>
 
                     </tbody>
 
@@ -305,11 +380,14 @@
     </div>
 
 
+
     <!-- Bottom Section -->
+
     <div class="row">
 
 
         <!-- Grand Total -->
+
         <div class="col-md-6 mb-4">
 
             <div class="card order-card h-100">
@@ -319,20 +397,26 @@
                     <h5 class="mb-3">
 
                         <i class="fa-solid fa-money-bill-wave"></i>
+
                         Order Summary
 
                     </h5>
 
+
                     <div class="d-flex justify-content-between">
 
                         <span>
+
                             Grand Total
+
                         </span>
+
 
                         <span class="grand-total">
 
                             ₹<span
                                 th:text="${order.grandTotal}">
+
                             </span>
 
                         </span>
@@ -346,7 +430,9 @@
         </div>
 
 
+
         <!-- Update Status -->
+
         <div class="col-md-6 mb-4">
 
             <div class="card order-card h-100">
@@ -356,6 +442,7 @@
                     <h5 class="mb-3">
 
                         <i class="fa-solid fa-pen-to-square"></i>
+
                         Update Order Status
 
                     </h5>
@@ -363,12 +450,14 @@
 
                     <div class="status-form">
 
+
                         <form
                             th:action="@{'/order/status/' + ${order.id}}"
                             method="post">
 
 
                             <!-- CSRF Token -->
+
                             <input
                                 type="hidden"
                                 th:name="${_csrf.parameterName}"
@@ -376,62 +465,96 @@
 
 
                             <!-- Status -->
+
                             <div class="mb-3">
 
                                 <label
                                     class="form-label fw-semibold">
+
                                     Select Status
+
                                 </label>
+
 
                                 <select
                                     name="status"
                                     class="form-select"
                                     required>
 
+
+                                    <!-- Pending -->
+
                                     <option
-                                        value="Pending"
-                                        th:selected="${order.status == 'Pending'}">
+                                        value="PENDING"
+                                        th:selected="${order.status.name() == 'PENDING'}">
+
                                         Pending
+
                                     </option>
 
+
+                                    <!-- Preparing -->
+
                                     <option
-                                        value="Preparing"
-                                        th:selected="${order.status == 'Preparing'}">
+                                        value="PREPARING"
+                                        th:selected="${order.status.name() == 'PREPARING'}">
+
                                         Preparing
+
                                     </option>
 
+
+                                    <!-- Ready -->
+
                                     <option
-                                        value="Ready"
-                                        th:selected="${order.status == 'Ready'}">
+                                        value="READY"
+                                        th:selected="${order.status.name() == 'READY'}">
+
                                         Ready
+
                                     </option>
 
+
+                                    <!-- Served -->
+
                                     <option
-                                        value="Served"
-                                        th:selected="${order.status == 'Served'}">
+                                        value="SERVED"
+                                        th:selected="${order.status.name() == 'SERVED'}">
+
                                         Served
+
                                     </option>
 
+
+                                    <!-- Paid -->
+
                                     <option
-                                        value="Paid"
-                                        th:selected="${order.status == 'Paid'}">
+                                        value="PAID"
+                                        th:selected="${order.status.name() == 'PAID'}">
+
                                         Paid
+
                                     </option>
+
 
                                 </select>
 
                             </div>
 
 
+
                             <!-- Update Button -->
+
                             <button
                                 type="submit"
                                 class="btn btn-success w-100">
 
                                 <i class="fa-solid fa-check"></i>
+
                                 Update Status
 
                             </button>
+
 
                         </form>
 
@@ -446,27 +569,35 @@
     </div>
 
 
+
     <!-- Dashboard Button -->
+
     <div class="text-center mt-2">
 
         <a th:href="@{/dashboard}"
            class="btn btn-outline-primary">
 
             <i class="fa-solid fa-house"></i>
+
             Dashboard
 
         </a>
 
     </div>
 
+
 </div>
 
 
+
 <!-- Bootstrap JS -->
+
 <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
 </script>
 
+
 </body>
 
 </html>
+

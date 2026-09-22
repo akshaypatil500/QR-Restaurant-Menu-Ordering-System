@@ -4,6 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Order List</title>
@@ -23,7 +24,6 @@
 <div class="container mt-4">
 
     <!-- Heading -->
-
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <h2 class="text-primary">
@@ -44,6 +44,7 @@
         </a>
 
     </div>
+
 
     <!-- Order Table -->
 
@@ -73,79 +74,71 @@
 
                 </thead>
 
+
                 <tbody>
 
                 <tr th:each="order : ${orders}">
 
                     <!-- Order ID -->
-
                     <td th:text="${order.id}"></td>
 
-                    <!-- Table -->
 
+                    <!-- Table -->
                     <td th:text="${order.table.tableNumber}"></td>
 
-                    <!-- Date -->
 
+                    <!-- Date -->
                     <td th:text="${#temporals.format(order.orderDate,'dd-MM-yyyy HH:mm')}"></td>
 
+
                     <!-- Grand Total -->
-
                     <td>
-
                         ₹ <span th:text="${order.grandTotal}"></span>
-
                     </td>
 
-                    <!-- Status -->
 
+                    <!-- Status -->
                     <td>
 
                         <!-- Pending -->
-
-                        <span
-                            th:if="${order.status=='Pending'}"
-                            class="badge bg-warning text-dark">
+                        <span th:if="${order.status.name() == 'PENDING'}"
+                              class="badge bg-warning text-dark">
 
                             Pending
 
                         </span>
 
-                        <!-- Preparing -->
 
-                        <span
-                            th:if="${order.status=='Preparing'}"
-                            class="badge bg-primary">
+                        <!-- Preparing -->
+                        <span th:if="${order.status.name() == 'PREPARING'}"
+                              class="badge bg-primary">
 
                             Preparing
 
                         </span>
 
-                        <!-- Ready -->
 
-                        <span
-                            th:if="${order.status=='Ready'}"
-                            class="badge bg-success">
+                        <!-- Ready -->
+                        <span th:if="${order.status.name() == 'READY'}"
+                              class="badge bg-success">
 
                             Ready
 
                         </span>
 
-                        <!-- Served -->
 
-                        <span
-                            th:if="${order.status=='Served'}"
-                            class="badge bg-info">
+                        <!-- Served -->
+                        <span th:if="${order.status.name() == 'SERVED'}"
+                              class="badge bg-info text-dark">
 
                             Served
 
                         </span>
 
-                        <!-- Paid -->
 
-                        <span
-                            th:if="${order.status=='Paid'}"
-                            class="badge bg-dark">
+                        <!-- Paid -->
+                        <span th:if="${order.status.name() == 'PAID'}"
+                              class="badge bg-dark">
 
                             Paid
 
@@ -153,13 +146,12 @@
 
                     </td>
 
-                    <!-- Action -->
 
+                    <!-- Action -->
                     <td>
 
-                        <a
-                            th:href="@{'/order/details/' + ${order.id}}"
-                            class="btn btn-primary btn-sm">
+                        <a th:href="@{'/order/details/' + ${order.id}}"
+                           class="btn btn-primary btn-sm">
 
                             <i class="fa-solid fa-eye"></i>
 
@@ -175,11 +167,11 @@
 
             </table>
 
+
             <!-- Empty -->
 
-            <div
-                    th:if="${#lists.isEmpty(orders)}"
-                    class="alert alert-warning text-center">
+            <div th:if="${#lists.isEmpty(orders)}"
+                 class="alert alert-warning text-center">
 
                 No Orders Found
 
@@ -191,7 +183,9 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
 
 </body>
 
