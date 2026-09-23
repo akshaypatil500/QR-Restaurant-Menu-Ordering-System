@@ -121,31 +121,21 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
                 .orElseThrow(() ->
                         new RuntimeException("Table Not Found"));
 
-        // Active Orders Check
-        boolean hasActiveOrders =
-                orderRepository.findByTable_Id(id)
-                        .stream()
-                        .anyMatch(order ->
-                                order.getStatus().equals("Pending")
-                                || order.getStatus().equals("Preparing")
-                                || order.getStatus().equals("Ready"));
-
-        if (hasActiveOrders) {
+        // Order history check
+        if (orderRepository.existsByTable_Id(id)) {
 
             throw new RuntimeException(
-                    "Cannot delete table. Active orders exist.");
-
+                    "Cannot delete table because order history exists for this table.");
         }
 
         // Delete QR Image
         if (table.getQrCodeImage() != null) {
 
-            File qrFile = new File(qrDirectory + table.getQrCodeImage());
+            File qrFile = new File(
+                    qrDirectory + table.getQrCodeImage());
 
             if (qrFile.exists()) {
-
                 qrFile.delete();
-
             }
         }
 
