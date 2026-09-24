@@ -9,24 +9,12 @@ import jakarta.persistence.*;
 @Table(name = "categories")
 public class Category {
 
-    // ===========================
-    // Primary Key
-    // ===========================
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ===========================
-    // Category Name
-    // ===========================
-
     @Column(nullable = false, unique = true, length = 100)
     private String name;
-
-    // ===========================
-    // Category Description
-    // ===========================
 
     @Column(length = 255)
     private String description;
@@ -41,16 +29,12 @@ public class Category {
             fetch = FetchType.LAZY)
     private List<Menu> menus = new ArrayList<>();
 
-    // ===========================
-    // Default Constructor
-    // ===========================
+ 
 
     public Category() {
     }
 
-    // ===========================
-    // Parameterized Constructor
-    // ===========================
+
 
     public Category(Long id, String name, String description, List<Menu> menus) {
         this.id = id;
@@ -59,9 +43,7 @@ public class Category {
         this.menus = menus;
     }
 
-    // ===========================
-    // Getters
-    // ===========================
+
 
     public Long getId() {
         return id;
@@ -79,9 +61,6 @@ public class Category {
         return menus;
     }
 
-    // ===========================
-    // Setters
-    // ===========================
 
     public void setId(Long id) {
         this.id = id;
@@ -99,10 +78,7 @@ public class Category {
         this.menus = menus;
     }
 
-    // ===========================
-    // toString()
-    // ===========================
-
+   
     @Override
     public String toString() {
         return "Category [id=" + id

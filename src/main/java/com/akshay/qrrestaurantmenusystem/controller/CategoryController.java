@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.akshay.qrrestaurantmenusystem.entity.Category;
 import com.akshay.qrrestaurantmenusystem.service.CategoryService;
 
@@ -26,7 +28,6 @@ public class CategoryController {
     @GetMapping("/add")
     public String showAddPage(Model model) {
 
-        // Empty Category Object Form ला पाठवतो
         model.addAttribute("category", new Category());
 
         return "category/add-category";
@@ -37,12 +38,25 @@ public class CategoryController {
     // URL : /category/save
     // ============================
     @PostMapping("/save")
-    public String saveCategory(@ModelAttribute Category category) {
+    public String saveCategory(
+            @ModelAttribute Category category,
+            RedirectAttributes redirectAttributes) {
 
-        // Service Layer ला Call
-        categoryService.saveCategory(category);
+        try {
 
-        // Save झाल्यानंतर Category List Page वर Redirect
+            categoryService.saveCategory(category);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Category saved successfully.");
+
+        } catch (RuntimeException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    e.getMessage());
+        }
+
         return "redirect:/category/list";
     }
 
@@ -53,8 +67,9 @@ public class CategoryController {
     @GetMapping("/list")
     public String listCategory(Model model) {
 
-        // Database मधील सर्व Categories घेऊन View ला पाठवतो
-        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute(
+                "categories",
+                categoryService.getAllCategories());
 
         return "category/categories";
     }
@@ -64,10 +79,13 @@ public class CategoryController {
     // URL : /category/edit/{id}
     // ============================
     @GetMapping("/edit/{id}")
-    public String editCategory(@PathVariable Long id, Model model) {
+    public String editCategory(
+            @PathVariable Long id,
+            Model model) {
 
-        // दिलेल्या ID नुसार Category शोधतो
-        model.addAttribute("category", categoryService.getCategoryById(id));
+        model.addAttribute(
+                "category",
+                categoryService.getCategoryById(id));
 
         return "category/add-category";
     }
@@ -77,11 +95,26 @@ public class CategoryController {
     // URL : /category/delete/{id}
     // ============================
     @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable Long id) {
+    public String deleteCategory(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
 
-        // Category Delete करतो
-        categoryService.deleteCategory(id);
+        try {
+
+            categoryService.deleteCategory(id);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Category deleted successfully.");
+
+        } catch (RuntimeException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    e.getMessage());
+        }
 
         return "redirect:/category/list";
     }
 }
+

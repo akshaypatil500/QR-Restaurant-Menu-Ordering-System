@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="fragments/head"></head>
@@ -21,7 +22,6 @@
             <a th:href="@{/category/add}" class="btn btn-light">
 
                 <i class="fa-solid fa-plus"></i>
-
                 Add Category
 
             </a>
@@ -31,7 +31,6 @@
     </div>
 
     <!-- Content -->
-
     <div class="content">
 
         <div class="container-fluid">
@@ -43,7 +42,6 @@
                     <h4 class="mb-0">
 
                         <i class="fa-solid fa-layer-group"></i>
-
                         Category List
 
                     </h4>
@@ -56,6 +54,48 @@
                 </div>
 
                 <div class="card-body">
+
+                    <!-- ============================== -->
+                    <!-- Success Message -->
+                    <!-- ============================== -->
+
+                    <div th:if="${success}"
+                         class="alert alert-success alert-dismissible fade show"
+                         role="alert">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span th:text="${success}"></span>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                        </button>
+
+                    </div>
+
+
+                    <!-- ============================== -->
+                    <!-- Error Message -->
+                    <!-- ============================== -->
+
+                    <div th:if="${error}"
+                         class="alert alert-danger alert-dismissible fade show"
+                         role="alert">
+
+                        <i class="fa-solid fa-circle-exclamation"></i>
+
+                        <span th:text="${error}"></span>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                        </button>
+
+                    </div>
+
+
+                    <!-- Category Table -->
 
                     <div class="table-responsive">
 
@@ -93,26 +133,19 @@
 
                                 <td>
 
-                                    <a
-                                            th:href="@{'/category/edit/' + ${category.id}}"
-
-                                            class="btn btn-warning btn-sm">
+                                    <a th:href="@{'/category/edit/' + ${category.id}}"
+                                       class="btn btn-warning btn-sm">
 
                                         <i class="fa-solid fa-pen"></i>
-
                                         Edit
 
                                     </a>
 
-                                    <a
-                                            th:href="@{'/category/delete/' + ${category.id}}"
-
-                                            onclick="return confirm('Are you sure you want to delete this category?')"
-
-                                            class="btn btn-danger btn-sm">
+                                    <a th:href="@{'/category/delete/' + ${category.id}}"
+                                       onclick="return confirm('Are you sure you want to delete this category?')"
+                                       class="btn btn-danger btn-sm">
 
                                         <i class="fa-solid fa-trash"></i>
-
                                         Delete
 
                                     </a>
@@ -147,7 +180,6 @@
     </div>
 
     <!-- Footer -->
-
     <div th:replace="fragments/footer :: footer"></div>
 
 </div>
@@ -157,3 +189,4 @@
 </body>
 
 </html>
+
