@@ -1,6 +1,5 @@
 package com.akshay.qrrestaurantmenusystem.controller;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.akshay.qrrestaurantmenusystem.entity.Menu;
 import com.akshay.qrrestaurantmenusystem.service.CategoryService;
@@ -51,17 +51,13 @@ public class MenuController {
     @GetMapping("/add")
     public String showAddMenuPage(Model model) {
 
-
         // Empty Menu object for form binding
         model.addAttribute("menu", new Menu());
-
 
         // Send all categories for dropdown
         model.addAttribute(
                 "categories",
-                categoryService.getAllCategories()
-        );
-
+                categoryService.getAllCategories());
 
         return "menu/add-menu";
     }
@@ -85,7 +81,8 @@ public class MenuController {
 
         if (result.hasErrors()) {
 
-            model.addAttribute("categories",
+            model.addAttribute(
+                    "categories",
                     categoryService.getAllCategories());
 
             return "menu/add-menu";
@@ -98,8 +95,6 @@ public class MenuController {
 
 
 
-
-
     // ==================================================
     // Display All Menu Items
     // URL : /menu/list
@@ -108,16 +103,14 @@ public class MenuController {
     @GetMapping("/list")
     public String listMenu(Model model) {
 
-
         // Fetch all menus from database
         model.addAttribute(
                 "menus",
-                menuService.getAllMenus()
-        );
-
+                menuService.getAllMenus());
 
         return "menu/menu-list";
     }
+
 
 
     // ==================================================
@@ -126,15 +119,21 @@ public class MenuController {
     // ==================================================
 
     @GetMapping("/edit/{id}")
-    public String editMenu(@PathVariable Long id, Model model) {
+    public String editMenu(
+            @PathVariable Long id,
+            Model model) {
 
-        model.addAttribute("menu", menuService.getMenuById(id));
+        model.addAttribute(
+                "menu",
+                menuService.getMenuById(id));
 
-        model.addAttribute("categories",
+        model.addAttribute(
+                "categories",
                 categoryService.getAllCategories());
 
         return "menu/edit-menu";
     }
+
 
 
     // ==================================================
@@ -153,18 +152,20 @@ public class MenuController {
 
             Model model) {
 
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
 
-            model.addAttribute("categories",
+            model.addAttribute(
+                    "categories",
                     categoryService.getAllCategories());
 
             return "menu/edit-menu";
         }
 
-        menuService.updateMenu(menu,imageFile);
+        menuService.updateMenu(menu, imageFile);
 
         return "redirect:/menu/list";
     }
+
 
 
     // ==================================================
@@ -174,15 +175,25 @@ public class MenuController {
 
     @GetMapping("/delete/{id}")
     public String deleteMenu(
-            @PathVariable Long id) {
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
 
+        try {
 
-        // Delete menu using service
-        menuService.deleteMenu(id);
+            menuService.deleteMenu(id);
 
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Menu deleted successfully.");
 
+        } catch (RuntimeException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    e.getMessage());
+        }
 
         return "redirect:/menu/list";
     }
-
 }
+

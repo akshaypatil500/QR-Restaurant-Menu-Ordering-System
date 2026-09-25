@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.akshay.qrrestaurantmenusystem.entity.Category;
 import com.akshay.qrrestaurantmenusystem.entity.Menu;
 import com.akshay.qrrestaurantmenusystem.repository.MenuRepository;
+import com.akshay.qrrestaurantmenusystem.repository.OrderItemRepository;
 import com.akshay.qrrestaurantmenusystem.service.FileStorageService;
 import com.akshay.qrrestaurantmenusystem.service.MenuService;
 
@@ -19,91 +19,91 @@ public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
 
 
+    // Repository object for order history check
+    private final OrderItemRepository orderItemRepository;
+
+
     // Service object for image upload/delete operations
     private final FileStorageService fileStorageService;
 
 
 
     // Constructor Injection
-    public MenuServiceImpl(MenuRepository menuRepository,
-                           FileStorageService fileStorageService) {
+    public MenuServiceImpl(
+            MenuRepository menuRepository,
+            OrderItemRepository orderItemRepository,
+            FileStorageService fileStorageService) {
 
         this.menuRepository = menuRepository;
+        this.orderItemRepository = orderItemRepository;
         this.fileStorageService = fileStorageService;
-    }	
-
+    }
 
 
     // ==================================================
     // Save New Menu
-    // Purpose : Add new menu item into database
     // ==================================================
 
     @Override
     public Menu saveMenu(Menu menu, MultipartFile imageFile) {
 
-
         // Check image is uploaded or not
-        if(imageFile != null && !imageFile.isEmpty()) {
-
+        if (imageFile != null && !imageFile.isEmpty()) {
 
             // Save image and get generated file name
             String imageName =
                     fileStorageService.saveImage(imageFile);
 
-
             // Store image name in Menu object
             menu.setImageName(imageName);
         }
-
 
         // Save menu data into database
         return menuRepository.save(menu);
     }
 
 
-
-
-
     // ==================================================
     // Update Existing Menu
-    // Purpose : Update menu details and handle image
     // ==================================================
+
     @Override
     public Menu updateMenu(Menu menu, MultipartFile imageFile) {
 
         Menu oldMenu = menuRepository.findById(menu.getId())
-                .orElseThrow(() -> new RuntimeException("Menu Not Found"));
+                .orElseThrow(() ->
+                        new RuntimeException("Menu Not Found"));
+
 
         // New image uploaded
         if (imageFile != null && !imageFile.isEmpty()) {
 
             // Delete old image
             if (oldMenu.getImageName() != null) {
-                fileStorageService.deleteImage(oldMenu.getImageName());
+
+                fileStorageService.deleteImage(
+                        oldMenu.getImageName());
             }
 
             // Save new image
-            String imageName = fileStorageService.saveImage(imageFile);
+            String imageName =
+                    fileStorageService.saveImage(imageFile);
+
             menu.setImageName(imageName);
 
         } else {
 
             // Keep old image
             menu.setImageName(oldMenu.getImageName());
-
         }
+
 
         return menuRepository.save(menu);
     }
 
 
-
-
-
     // ==================================================
     // Get All Menus
-    // Purpose : Display all menu items
     // ==================================================
 
     @Override
@@ -113,12 +113,8 @@ public class MenuServiceImpl implements MenuService {
     }
 
 
-
-
-
     // ==================================================
     // Get Menu By Id
-    // Purpose : Find single menu record
     // ==================================================
 
     @Override
@@ -131,7 +127,6 @@ public class MenuServiceImpl implements MenuService {
 
     // ==================================================
     // Delete Menu
-    // Purpose : Delete image and database record
     // ==================================================
 
     @Override
@@ -141,37 +136,52 @@ public class MenuServiceImpl implements MenuService {
                 .orElseThrow(() ->
                         new RuntimeException("Menu Not Found"));
 
-        if(menu.getImageName()!=null){
 
-            fileStorageService.deleteImage(menu.getImageName());
+        // Check whether this menu exists in order history
 
+        if (orderItemRepository.existsByMenuId(id)) {
+
+            throw new RuntimeException(
+                    "Cannot delete menu because order history exists for this menu.");
         }
 
+
+        // Delete menu image
+
+        if (menu.getImageName() != null) {
+
+            fileStorageService.deleteImage(
+                    menu.getImageName());
+        }
+
+
+        // Delete menu
+
         menuRepository.delete(menu);
-
     }
-    
-    
- // ==========================================
- // GET ALL AVAILABLE MENU ITEMS
- // ==========================================
 
- @Override
- public List<Menu> getAllAvailableMenus() {
 
-     return menuRepository.findByAvailableTrue();
+    // ==========================================
+    // GET ALL AVAILABLE MENU ITEMS
+    // ==========================================
 
- }
- 
- @Override
- public List<Menu> getAvailableMenusByCategory(Long categoryId) {
+    @Override
+    public List<Menu> getAllAvailableMenus() {
 
-     return menuRepository.findByCategoryIdAndAvailableTrue(categoryId);
+        return menuRepository.findByAvailableTrue();
+    }
 
- }
- 
- 
- 
- 
 
+    // ==========================================
+    // GET AVAILABLE MENUS BY CATEGORY
+    // ==========================================
+
+    @Override
+    public List<Menu> getAvailableMenusByCategory(
+            Long categoryId) {
+
+        return menuRepository
+                .findByCategoryIdAndAvailableTrue(categoryId);
+    }
 }
+

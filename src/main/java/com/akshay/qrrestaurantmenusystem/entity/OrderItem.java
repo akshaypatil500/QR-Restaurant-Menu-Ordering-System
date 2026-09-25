@@ -53,16 +53,10 @@ public class OrderItem {
     @Column(nullable = false)
     private Double totalPrice;
 
-    // ==========================================
-    // Default Constructor
-    // ==========================================
+   
 
     public OrderItem() {
     }
-
-    // ==========================================
-    // Parameterized Constructor
-    // ==========================================
 
     public OrderItem(Long id,
                      RestaurantOrder restaurantOrder,
@@ -78,10 +72,6 @@ public class OrderItem {
         this.price = price;
         this.totalPrice = totalPrice;
     }
-
-    // ==========================================
-    // Getters
-    // ==========================================
 
     public Long getId() {
         return id;
@@ -107,9 +97,6 @@ public class OrderItem {
         return totalPrice;
     }
 
-    // ==========================================
-    // Setters
-    // ==========================================
 
     public void setId(Long id) {
         this.id = id;
@@ -134,10 +121,6 @@ public class OrderItem {
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
-
-    // ==========================================
-    // toString()
-    // ==========================================
 
     @Override
     public String toString() {

@@ -11,4 +11,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     // All Items Of One Order
     List<OrderItem> findByRestaurantOrderId(Long orderId);
 
+    // Check whether a menu item exists in order history
+    boolean existsByMenuId(Long menuId);
 }
+

@@ -25,18 +25,21 @@ public class Category {
 
     @OneToMany(
             mappedBy = "category",
-            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private List<Menu> menus = new ArrayList<>();
 
- 
+
+    // ===========================
+    // Constructors
+    // ===========================
 
     public Category() {
     }
 
 
+    public Category(Long id, String name, String description,
+                    List<Menu> menus) {
 
-    public Category(Long id, String name, String description, List<Menu> menus) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -44,46 +47,52 @@ public class Category {
     }
 
 
+    // ===========================
+    // Getters and Setters
+    // ===========================
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public List<Menu> getMenus() {
-        return menus;
-    }
-
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public List<Menu> getMenus() {
+        return menus;
     }
 
     public void setMenus(List<Menu> menus) {
         this.menus = menus;
     }
 
-   
+
     @Override
     public String toString() {
+
         return "Category [id=" + id
                 + ", name=" + name
                 + ", description=" + description + "]";
     }
-
 }
+
