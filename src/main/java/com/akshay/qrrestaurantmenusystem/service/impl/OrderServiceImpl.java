@@ -135,6 +135,34 @@ public class OrderServiceImpl implements OrderService {
 
         RestaurantOrder order = getOrderById(orderId);
 
+        OrderStatus currentStatus = order.getStatus();
+
+        // ==========================================
+        // STATUS TRANSITION VALIDATION
+        // ==========================================
+
+        boolean validTransition =
+                (currentStatus == OrderStatus.PENDING
+                        && status == OrderStatus.PREPARING)
+
+                || (currentStatus == OrderStatus.PREPARING
+                        && status == OrderStatus.READY)
+
+                || (currentStatus == OrderStatus.READY
+                        && status == OrderStatus.SERVED)
+
+                || (currentStatus == OrderStatus.SERVED
+                        && status == OrderStatus.PAID);
+
+        if (!validTransition) {
+
+            throw new RuntimeException(
+                    "Invalid order status transition from "
+                    + currentStatus
+                    + " to "
+                    + status);
+        }
+
         order.setStatus(status);
 
         orderRepository.save(order);

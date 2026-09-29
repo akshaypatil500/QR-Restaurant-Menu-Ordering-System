@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.akshay.qrrestaurantmenusystem.entity.OrderStatus;
 import com.akshay.qrrestaurantmenusystem.service.OrderService;
@@ -65,7 +66,7 @@ public class OrderController {
     // ORDER DETAILS
     // URL : /order/details/{id}
     // ==========================================
-    
+
     @GetMapping("/details/{id}")
     public String orderDetails(
             @PathVariable Long id,
@@ -88,12 +89,28 @@ public class OrderController {
     // ==========================================
 
     @PostMapping("/status/{id}")
-    public String updateStatus(@PathVariable Long id,
-                               @RequestParam OrderStatus status) {
+    public String updateStatus(
+            @PathVariable Long id,
+            @RequestParam OrderStatus status,
+            RedirectAttributes redirectAttributes) {
 
-        orderService.updateOrderStatus(id, status);
+        try {
+
+            orderService.updateOrderStatus(id, status);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Order status updated successfully.");
+
+        } catch (RuntimeException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    e.getMessage());
+        }
 
         return "redirect:/order/list";
     }
 
 }
+

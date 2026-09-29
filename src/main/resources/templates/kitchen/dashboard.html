@@ -11,7 +11,6 @@
 
     <title>Kitchen Dashboard</title>
 
-
     <!-- Bootstrap -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
@@ -61,6 +60,41 @@
     </div>
 
 
+    <!-- Success Message -->
+
+    <div th:if="${success}"
+         class="alert alert-success alert-dismissible fade show"
+         role="alert">
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <span th:text="${success}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+
+
+    <!-- Error Message -->
+
+    <div th:if="${error}"
+         class="alert alert-danger alert-dismissible fade show"
+         role="alert">
+
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+        <span th:text="${error}"></span>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+
 
     <div class="row">
 
@@ -98,7 +132,6 @@
                     </div>
 
 
-
                     <!-- Pending Orders -->
 
                     <div th:each="order : ${pendingOrders}"
@@ -112,11 +145,9 @@
                                 Order #
 
                                 <span th:text="${order.id}">
-
                                 </span>
 
                             </h5>
-
 
 
                             <p>
@@ -124,11 +155,9 @@
                                 <b>Table :</b>
 
                                 <span th:text="${order.table.tableNumber}">
-
                                 </span>
 
                             </p>
-
 
 
                             <p>
@@ -136,11 +165,9 @@
                                 <b>Total :</b>
 
                                 ₹ <span th:text="${order.grandTotal}">
-
                                 </span>
 
                             </p>
-
 
 
                             <!-- Start Preparing -->
@@ -186,7 +213,6 @@
         </div>
 
 
-
         <!-- ================= PREPARING ORDERS ================= -->
 
         <div class="col-md-4">
@@ -220,7 +246,6 @@
                     </div>
 
 
-
                     <!-- Preparing Orders -->
 
                     <div th:each="order : ${preparingOrders}"
@@ -234,11 +259,9 @@
                                 Order #
 
                                 <span th:text="${order.id}">
-
                                 </span>
 
                             </h5>
-
 
 
                             <p>
@@ -246,11 +269,9 @@
                                 <b>Table :</b>
 
                                 <span th:text="${order.table.tableNumber}">
-
                                 </span>
 
                             </p>
-
 
 
                             <p>
@@ -258,11 +279,9 @@
                                 <b>Total :</b>
 
                                 ₹ <span th:text="${order.grandTotal}">
-
                                 </span>
 
                             </p>
-
 
 
                             <!-- Mark Ready -->
@@ -308,7 +327,6 @@
         </div>
 
 
-
         <!-- ================= READY ORDERS ================= -->
 
         <div class="col-md-4">
@@ -342,7 +360,6 @@
                     </div>
 
 
-
                     <!-- Ready Orders -->
 
                     <div th:each="order : ${readyOrders}"
@@ -356,11 +373,9 @@
                                 Order #
 
                                 <span th:text="${order.id}">
-
                                 </span>
 
                             </h5>
-
 
 
                             <p>
@@ -368,11 +383,9 @@
                                 <b>Table :</b>
 
                                 <span th:text="${order.table.tableNumber}">
-
                                 </span>
 
                             </p>
-
 
 
                             <p>
@@ -380,11 +393,9 @@
                                 <b>Total :</b>
 
                                 ₹ <span th:text="${order.grandTotal}">
-
                                 </span>
 
                             </p>
-
 
 
                             <!-- Mark Served -->
@@ -434,11 +445,9 @@
 </div>
 
 
-
 <!-- Bootstrap JS -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
-
 </script>
 
 
