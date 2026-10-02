@@ -83,14 +83,15 @@ public class SecurityConfig {
                 // ==============================
 
             		.requestMatchers(
-            		        "/login",
-            		        "/access-denied",
-            		        "/css/**",
-            		        "/js/**",
-            		        "/images/**",
-            		        "/uploads/**",
-            		        "/customer/**"
-            		).permitAll()
+            			    "/login",
+            			    "/access-denied",
+            			    "/css/**",
+            			    "/js/**",
+            			    "/images/**",
+            			    "/uploads/**",
+            			    "/customer/**",
+            			    "/cart/**"
+            			).permitAll()
 
                 // ==============================
                 // ADMIN

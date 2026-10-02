@@ -23,6 +23,10 @@ public interface OrderService {
     // Update Status
     void updateOrderStatus(Long orderId, OrderStatus status);
     
+    List<RestaurantOrder> getOrdersByTable(Long tableId);
+
+    RestaurantOrder getCurrentOrder(Long tableId);
+    
     List<OrderItem> getOrderItems(Long orderId);
     
     List<RestaurantOrder> getPendingOrders();

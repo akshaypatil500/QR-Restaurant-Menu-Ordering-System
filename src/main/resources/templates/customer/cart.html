@@ -199,15 +199,22 @@
 
                 </h3>
 
-                <a
-                    th:href="@{'/order/checkout/' + ${tableId}}"
-                    class="btn btn-primary btn-lg mt-3">
+				<form th:action="@{'/customer/order/place/' + ${tableId}}"
+				      method="post">
 
-                    <i class="fa-solid fa-check"></i>
+				    <input type="hidden"
+				           th:name="${_csrf.parameterName}"
+				           th:value="${_csrf.token}">
 
-                    Place Order
+				    <button type="submit"
+				            class="btn btn-primary btn-lg mt-3">
 
-                </a>
+				        <i class="fa-solid fa-check"></i>
+				        Place Order
+
+				    </button>
+
+				</form>
 
             </div>
 

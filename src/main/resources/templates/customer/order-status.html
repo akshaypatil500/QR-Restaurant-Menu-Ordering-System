@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Order Status</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body style="background:#f5f7fb;">
+
+<div class="container py-4">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="text-primary">
+
+            <i class="fa-solid fa-receipt"></i>
+
+            Order Status
+
+        </h2>
+
+        <a th:href="@{'/customer/menu/' + ${tableId}}"
+           class="btn btn-secondary">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back To Menu
+
+        </a>
+
+    </div>
+
+
+    <!-- No Active Order -->
+
+    <div th:if="${order == null}"
+         class="alert alert-info text-center">
+
+        <h5>
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            No Active Order
+
+        </h5>
+
+        <p class="mb-0">
+            You currently don't have any active order.
+        </p>
+
+    </div>
+
+
+    <!-- Active Order -->
+
+    <div th:if="${order != null}">
+
+        <!-- Order Header -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <small class="text-muted">
+                            Order Number
+                        </small>
+
+                        <h5 th:text="'#' + ${order.id}">
+                        </h5>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <small class="text-muted">
+                            Table Number
+                        </small>
+
+                        <h5 th:text="${order.table.tableNumber}">
+                        </h5>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <small class="text-muted">
+                            Total
+                        </small>
+
+                        <h5 class="text-success">
+
+                            ₹
+                            <span th:text="${order.grandTotal}">
+                            </span>
+
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Order Status -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body">
+
+                <h5 class="mb-4">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    Order Progress
+
+                </h5>
+
+
+                <div class="mb-3">
+
+                    <strong>Order Placed</strong>
+
+                    <span
+                        th:if="${order.status.name() == 'PENDING'
+                                or order.status.name() == 'PREPARING'
+                                or order.status.name() == 'READY'
+                                or order.status.name() == 'SERVED'
+                                or order.status.name() == 'PAID'}"
+                        class="text-success">
+
+                        ✓
+
+                    </span>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <strong>Preparing</strong>
+
+                    <span
+                        th:if="${order.status.name() == 'PREPARING'
+                                or order.status.name() == 'READY'
+                                or order.status.name() == 'SERVED'
+                                or order.status.name() == 'PAID'}"
+                        class="text-success">
+
+                        ✓
+
+                    </span>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <strong>Ready</strong>
+
+                    <span
+                        th:if="${order.status.name() == 'READY'
+                                or order.status.name() == 'SERVED'
+                                or order.status.name() == 'PAID'}"
+                        class="text-success">
+
+                        ✓
+
+                    </span>
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <strong>Served</strong>
+
+                    <span
+                        th:if="${order.status.name() == 'SERVED'
+                                or order.status.name() == 'PAID'}"
+                        class="text-success">
+
+                        ✓
+
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Paid</strong>
+
+                    <span
+                        th:if="${order.status.name() == 'PAID'}"
+                        class="text-success">
+
+                        ✓
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Order Items -->
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <h5 class="mb-3">
+
+                    <i class="fa-solid fa-utensils"></i>
+
+                    Ordered Items
+
+                </h5>
+
+
+                <div class="table-responsive">
+
+                    <table class="table align-middle">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Item</th>
+
+                            <th>Price</th>
+
+                            <th>Qty</th>
+
+                            <th>Total</th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        <tr th:each="item : ${order.orderItems}">
+
+                            <td th:text="${item.menu.name}">
+                            </td>
+
+                            <td>
+
+                                ₹
+                                <span th:text="${item.price}">
+                                </span>
+
+                            </td>
+
+                            <td th:text="${item.quantity}">
+                            </td>
+
+                            <td>
+
+                                ₹
+                                <span th:text="${item.totalPrice}">
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="text-end">
+
+                    <h4>
+
+                        Grand Total:
+
+                        <span class="text-success">
+
+                            ₹
+                            <span th:text="${order.grandTotal}">
+                            </span>
+
+                        </span>
+
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

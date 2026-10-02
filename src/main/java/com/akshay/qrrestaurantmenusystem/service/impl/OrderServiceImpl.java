@@ -207,4 +207,23 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.findByStatus(OrderStatus.READY);
     }
+    
+    @Override
+    public List<RestaurantOrder> getOrdersByTable(Long tableId) {
+        return orderRepository.findByTable_Id(tableId);
+    }
+    
+    @Override
+    public RestaurantOrder getCurrentOrder(Long tableId) {
+
+        List<RestaurantOrder> orders =
+                orderRepository.findByTable_Id(tableId);
+
+        return orders.stream()
+                .filter(order ->
+                        order.getStatus() != OrderStatus.PAID)
+                .reduce((first, second) -> second)
+                .orElse(null);
+    }
+    
 }
