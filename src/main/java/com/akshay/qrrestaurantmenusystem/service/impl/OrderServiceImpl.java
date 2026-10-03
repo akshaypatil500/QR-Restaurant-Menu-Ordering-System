@@ -226,4 +226,19 @@ public class OrderServiceImpl implements OrderService {
                 .orElse(null);
     }
     
+    @Override
+    public List<RestaurantOrder> getActiveOrders() {
+
+        return orderRepository.findAll()
+                .stream()
+                .filter(order -> order.getStatus() != OrderStatus.PAID)
+                .toList();
+    }
+
+    @Override
+    public List<RestaurantOrder> getCompletedOrders() {
+
+        return orderRepository.findByStatus(OrderStatus.PAID);
+    }
+    
 }

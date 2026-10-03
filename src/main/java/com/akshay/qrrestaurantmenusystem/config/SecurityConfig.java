@@ -97,13 +97,14 @@ public class SecurityConfig {
                 // ADMIN
                 // ==============================
 
-                .requestMatchers(
-                        "/dashboard",
-                        "/category/**",
-                        "/menu/**",
-                        "/table/**",
-                        "/order/**"
-                ).hasRole("ADMIN")
+            		.requestMatchers(
+            			    "/dashboard",
+            			    "/category/**",
+            			    "/menu/**",
+            			    "/table/**",
+            			    "/order/**",
+            			    "/admin/customer/**"
+            			).hasRole("ADMIN")
 
                 // ==============================
                 // KITCHEN

@@ -22,11 +22,7 @@ public interface OrderService {
     
     // Update Status
     void updateOrderStatus(Long orderId, OrderStatus status);
-    
-    List<RestaurantOrder> getOrdersByTable(Long tableId);
-
-    RestaurantOrder getCurrentOrder(Long tableId);
-    
+      
     List<OrderItem> getOrderItems(Long orderId);
     
     List<RestaurantOrder> getPendingOrders();
@@ -34,4 +30,12 @@ public interface OrderService {
     List<RestaurantOrder> getPreparingOrders();
     
     List<RestaurantOrder> getReadyOrders();
+    
+    List<RestaurantOrder> getOrdersByTable(Long tableId);
+
+    RestaurantOrder getCurrentOrder(Long tableId);
+    
+    List<RestaurantOrder> getActiveOrders();
+
+    List<RestaurantOrder> getCompletedOrders();
 }
