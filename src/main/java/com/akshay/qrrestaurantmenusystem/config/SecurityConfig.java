@@ -11,147 +11,106 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 public class SecurityConfig {
 
-    // ==========================================
-    // PASSWORD ENCODER
-    // ==========================================
-
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
-    // ==========================================
-    // ROLE BASED LOGIN REDIRECT
-    // ==========================================
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
 
         return (request, response, authentication) -> {
 
-            boolean isAdmin =
-                    authentication.getAuthorities()
-                            .stream()
-                            .anyMatch(
-                                    authority ->
-                                    authority.getAuthority()
-                                    .equals("ROLE_ADMIN")
-                            );
+            boolean isAdmin = false;
+            boolean isKitchen = false;
+
+            for (var authority : authentication.getAuthorities()) {
+
+                if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                    isAdmin = true;
+                }
+
+                if (authority.getAuthority().equals("ROLE_KITCHEN")) {
+                    isKitchen = true;
+                }
+            }
+
 
             if (isAdmin) {
-
                 response.sendRedirect("/dashboard");
-
                 return;
             }
 
-            boolean isKitchen =
-                    authentication.getAuthorities()
-                            .stream()
-                            .anyMatch(
-                                    authority ->
-                                    authority.getAuthority()
-                                    .equals("ROLE_KITCHEN")
-                            );
 
             if (isKitchen) {
-
                 response.sendRedirect("/kitchen/dashboard");
-
                 return;
             }
+
 
             response.sendRedirect("/login?error");
         };
     }
 
-    // ==========================================
-    // SECURITY FILTER CHAIN
-    // ==========================================
 
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http) throws Exception {
 
         http
-
             .authorizeHttpRequests(auth -> auth
 
-                // ==============================
-                // PUBLIC
-                // ==============================
+                .requestMatchers(
+                    "/login",
+                    "/access-denied",
+                    "/css/**",
+                    "/js/**",
+                    "/images/**",
+                    "/uploads/**",
+                    "/customer/**",
+                    "/cart/**"
+                ).permitAll()
 
-            		.requestMatchers(
-            			    "/login",
-            			    "/access-denied",
-            			    "/css/**",
-            			    "/js/**",
-            			    "/images/**",
-            			    "/uploads/**",
-            			    "/customer/**",
-            			    "/cart/**"
-            			).permitAll()
-
-                // ==============================
-                // ADMIN
-                // ==============================
-
-            		.requestMatchers(
-            			    "/dashboard",
-            			    "/category/**",
-            			    "/menu/**",
-            			    "/table/**",
-            			    "/order/**",
-            			    "/admin/customer/**"
-            			).hasRole("ADMIN")
-
-                // ==============================
-                // KITCHEN
-                // ==============================
 
                 .requestMatchers(
-                        "/kitchen/**"
+                    "/dashboard",
+                    "/category/**",
+                    "/menu/**",
+                    "/table/**",
+                    "/order/**",
+                    "/admin/customer/**"
+                ).hasRole("ADMIN")
+
+
+                .requestMatchers(
+                    "/kitchen/**"
                 ).hasAnyRole("ADMIN", "KITCHEN")
 
-                // ==============================
-                // EVERYTHING ELSE
-                // ==============================
 
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
             )
 
-            // ==============================
-            // LOGIN
-            // ==============================
 
             .formLogin(form -> form
-
                 .loginPage("/login")
-
-                .successHandler(
-                        authenticationSuccessHandler()
-                )
-
+                .successHandler(authenticationSuccessHandler())
                 .permitAll()
             )
-            
+
+
             .exceptionHandling(exception -> exception
-                    .accessDeniedPage("/access-denied")
+                .accessDeniedPage("/access-denied")
             )
 
-            // ==============================
-            // LOGOUT
-            // ==============================
 
             .logout(logout -> logout
-
                 .logoutUrl("/logout")
-
                 .logoutSuccessUrl("/login?logout")
-
                 .permitAll()
             );
+
 
         return http.build();
     }

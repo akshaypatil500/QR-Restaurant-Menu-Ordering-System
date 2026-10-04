@@ -38,6 +38,14 @@ public class CustomerOrderController {
         model.addAttribute("order", order);
         model.addAttribute("tableId", tableId);
 
+        if (order != null) {
+
+            model.addAttribute(
+                    "items",
+                    orderService.getOrderItems(order.getId())
+            );
+        }
+
         return "customer/order-status";
     }
 }

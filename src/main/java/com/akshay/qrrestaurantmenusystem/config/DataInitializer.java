@@ -12,52 +12,38 @@ import com.akshay.qrrestaurantmenusystem.repository.UserRepository;
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initializeUsers(
+    public CommandLineRunner createUsers(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder) {
 
         return args -> {
 
-            // ==========================================
-            // CREATE ADMIN USER
-            // ==========================================
-
+            // Admin user
             if (userRepository.findByUsername("admin").isEmpty()) {
 
                 User admin = new User();
 
                 admin.setUsername("admin");
-
                 admin.setPassword(
                         passwordEncoder.encode("admin123"));
-
                 admin.setRole("ADMIN");
-
-                admin.setEnabled(true);
 
                 userRepository.save(admin);
             }
 
-            // ==========================================
-            // CREATE KITCHEN USER
-            // ==========================================
 
+            // Kitchen user
             if (userRepository.findByUsername("kitchen").isEmpty()) {
 
                 User kitchen = new User();
 
                 kitchen.setUsername("kitchen");
-
                 kitchen.setPassword(
                         passwordEncoder.encode("kitchen123"));
-
                 kitchen.setRole("KITCHEN");
-
-                kitchen.setEnabled(true);
 
                 userRepository.save(kitchen);
             }
-
         };
     }
 }

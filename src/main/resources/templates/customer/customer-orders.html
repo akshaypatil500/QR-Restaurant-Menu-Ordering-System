@@ -1,48 +1,386 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Customer Orders</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+
+        body {
+            background-color: #FAF9F7;
+            font-family: "Segoe UI", sans-serif;
+            color: #292524;
+        }
+
+        .page-header {
+            background-color: #1E1B18;
+            color: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .page-header p {
+            margin: 5px 0 0;
+            color: #D6D3D1;
+        }
+
+        .summary-card {
+            background-color: white;
+            border: 1px solid #E7E5E4;
+            border-radius: 14px;
+            padding: 22px;
+            height: 100%;
+        }
+
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: #FEF3C7;
+            color: #D97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .summary-card h3 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .summary-card p {
+            margin: 5px 0 0;
+            color: #78716C;
+        }
+
+        .section-card {
+            background-color: white;
+            border: 1px solid #E7E5E4;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #E7E5E4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h4 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .section-header span {
+            color: #78716C;
+            font-size: 14px;
+        }
+
+        .table-responsive {
+            padding: 5px 15px 15px;
+        }
+
+        .table {
+            margin-bottom: 0;
+            vertical-align: middle;
+        }
+
+        .table thead th {
+            color: #78716C;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 1px solid #E7E5E4;
+            padding: 15px;
+        }
+
+        .table tbody td {
+            padding: 17px 15px;
+            border-bottom: 1px solid #F1F0EE;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #1E1B18;
+        }
+
+        .table-number {
+            font-weight: 600;
+        }
+
+        .order-date {
+            color: #78716C;
+            font-size: 14px;
+        }
+
+        .amount {
+            font-weight: 700;
+        }
+
+        .status-badge {
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-preparing {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .status-ready {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+
+        .status-served {
+            background-color: #E0E7FF;
+            color: #3730A3;
+        }
+
+        .status-paid {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+
+        .view-btn {
+            border: 1px solid #D6D3D1;
+            color: #44403C;
+            background-color: white;
+            border-radius: 8px;
+            padding: 7px 12px;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .view-btn:hover {
+            background-color: #F5F5F4;
+            color: #1E1B18;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #78716C;
+        }
+
+        .empty-state i {
+            font-size: 42px;
+            color: #D6D3D1;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h5 {
+            color: #44403C;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+
+            .page-header {
+                padding: 20px;
+            }
+
+            .section-header {
+                padding: 18px;
+            }
+
+            .table-responsive {
+                padding: 5px;
+            }
+
+            .table thead {
+                display: none;
+            }
+
+            .table tbody tr {
+                display: block;
+                border-bottom: 1px solid #E7E5E4;
+                padding: 15px 10px;
+            }
+
+            .table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 7px 5px;
+            }
+
+            .table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #78716C;
+                margin-right: 15px;
+            }
+
+            .table tbody tr:last-child {
+                border-bottom: none;
+            }
+        }
+
+    </style>
+
 </head>
 
-<body style="background:#f5f7fb;">
+<body>
 
-<div class="container-fluid py-4">
+<div class="container-fluid p-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- PAGE HEADER -->
 
-        <div>
-            <h2 class="fw-bold">
-                <i class="fa-solid fa-users"></i>
-                Customer Orders
-            </h2>
+    <div class="page-header">
 
-            <p class="text-muted mb-0">
-                Monitor customer orders and their current status.
-            </p>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+
+                <h2>
+                    <i class="fa-solid fa-users me-2"></i>
+                    Customer Orders
+                </h2>
+
+                <p>
+                    Monitor active orders and customer order history.
+                </p>
+
+            </div>
+
+            <div>
+
+                <button
+                    class="btn btn-light"
+                    onclick="window.location.reload();">
+
+                    <i class="fa-solid fa-rotate me-1"></i>
+                    Refresh
+
+                </button>
+
+            </div>
+
         </div>
 
     </div>
 
 
-    <div class="card shadow-sm border-0">
+    <!-- SUMMARY -->
 
-        <div class="card-body">
+    <div class="row g-4 mb-4">
 
-            <div class="table-responsive">
+        <div class="col-md-6">
 
-                <table class="table table-hover align-middle">
+            <div class="summary-card">
 
-                    <thead class="table-light">
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                </div>
+
+                <h3 th:text="${#lists.size(activeOrders)}">
+                    0
+                </h3>
+
+                <p>
+                    Active Orders
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                </div>
+
+                <h3 th:text="${#lists.size(completedOrders)}">
+                    0
+                </h3>
+
+                <p>
+                    Completed Orders
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTIVE ORDERS -->
+
+    <div class="section-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h4>
+                    Active Orders
+                </h4>
+
+                <span>
+                    Orders currently being processed
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table">
+
+                <thead>
 
                     <tr>
 
@@ -52,83 +390,112 @@
 
                         <th>Date</th>
 
-                        <th>Total</th>
-
                         <th>Status</th>
+
+                        <th>Total</th>
 
                         <th>Action</th>
 
                     </tr>
 
-                    </thead>
+                </thead>
 
 
-                    <tbody>
+                <tbody>
 
-                    <tr th:each="order : ${orders}">
+                    <tr th:each="order : ${activeOrders}">
 
-                        <td>
-                            <strong th:text="'#' + ${order.id}">
-                            </strong>
+                        <td data-label="Order">
+
+                            <span
+                                class="order-id"
+                                th:text="'#' + ${order.id}">
+                                #1
+                            </span>
+
                         </td>
 
 
-                        <td>
-                            <span th:text="${order.table.tableNumber}">
+                        <td data-label="Table">
+
+                            <span
+                                class="table-number"
+                                th:text="'Table ' + ${order.table.tableNumber}">
+                                Table 1
                             </span>
+
                         </td>
 
 
-                        <td>
-                            <span th:text="${order.orderDate}">
+                        <td data-label="Date">
+
+                            <span
+                                class="order-date"
+                                th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}">
+                                01 Oct 2026
                             </span>
+
                         </td>
 
 
-                        <td>
-                            ₹
-                            <span th:text="${order.grandTotal}">
-                            </span>
-                        </td>
+                        <td data-label="Status">
 
+                            <span
+                                class="status-badge status-pending"
+                                th:if="${order.status.name() == 'PENDING'}">
 
-                        <td>
+                                Pending
 
-                            <span th:if="${order.status.name() == 'PENDING'}"
-                                  class="badge bg-warning text-dark">
-                                Order Placed
                             </span>
 
-                            <span th:if="${order.status.name() == 'PREPARING'}"
-                                  class="badge bg-primary">
+
+                            <span
+                                class="status-badge status-preparing"
+                                th:if="${order.status.name() == 'PREPARING'}">
+
                                 Preparing
+
                             </span>
 
-                            <span th:if="${order.status.name() == 'READY'}"
-                                  class="badge bg-success">
+
+                            <span
+                                class="status-badge status-ready"
+                                th:if="${order.status.name() == 'READY'}">
+
                                 Ready
+
                             </span>
 
-                            <span th:if="${order.status.name() == 'SERVED'}"
-                                  class="badge bg-info text-dark">
+
+                            <span
+                                class="status-badge status-served"
+                                th:if="${order.status.name() == 'SERVED'}">
+
                                 Served
-                            </span>
 
-                            <span th:if="${order.status.name() == 'PAID'}"
-                                  class="badge bg-secondary">
-                                Paid
                             </span>
 
                         </td>
 
 
-                        <td>
+                        <td data-label="Total">
 
-                            <a th:href="@{'/order/details/' + ${order.id}}"
-                               class="btn btn-sm btn-outline-primary">
+                            <span
+                                class="amount"
+                                th:text="'₹ ' + ${order.grandTotal}">
+                                ₹ 500
+                            </span>
 
-                                <i class="fa-solid fa-eye"></i>
+                        </td>
 
+
+                        <td data-label="Action">
+
+                            <a
+                                th:href="@{'/order/details/' + ${order.id}}"
+                                class="view-btn">
+
+                                <i class="fa-solid fa-eye me-1"></i>
                                 View
 
                             </a>
@@ -138,28 +505,201 @@
                     </tr>
 
 
-                    <tr th:if="${#lists.isEmpty(orders)}">
+                    <!-- EMPTY -->
 
-                        <td colspan="6"
-                            class="text-center text-muted py-4">
+                    <tr th:if="${#lists.isEmpty(activeOrders)}">
 
-                            No customer orders found.
+                        <td colspan="6">
+
+                            <div class="empty-state">
+
+                                <i class="fa-solid fa-mug-hot"></i>
+
+                                <h5>
+                                    No Active Orders
+                                </h5>
+
+                                <p>
+                                    There are currently no active customer orders.
+                                </p>
+
+                            </div>
 
                         </td>
 
                     </tr>
 
-                    </tbody>
+                </tbody>
 
-                </table>
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPLETED ORDERS -->
+
+    <div class="section-card">
+
+        <div class="section-header">
+
+            <div>
+
+                <h4>
+                    Completed Orders
+                </h4>
+
+                <span>
+                    Previously completed customer orders
+                </span>
 
             </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Order</th>
+
+                        <th>Table</th>
+
+                        <th>Date</th>
+
+                        <th>Status</th>
+
+                        <th>Total</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr th:each="order : ${completedOrders}">
+
+                        <td data-label="Order">
+
+                            <span
+                                class="order-id"
+                                th:text="'#' + ${order.id}">
+                                #1
+                            </span>
+
+                        </td>
+
+
+                        <td data-label="Table">
+
+                            <span
+                                class="table-number"
+                                th:text="'Table ' + ${order.table.tableNumber}">
+                                Table 1
+                            </span>
+
+                        </td>
+
+
+                        <td data-label="Date">
+
+                            <span
+                                class="order-date"
+                                th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}">
+                                01 Oct 2026
+                            </span>
+
+                        </td>
+
+
+                        <td data-label="Status">
+
+                            <span
+                                class="status-badge status-paid">
+
+                                Paid
+
+                            </span>
+
+                        </td>
+
+
+                        <td data-label="Total">
+
+                            <span
+                                class="amount"
+                                th:text="'₹ ' + ${order.grandTotal}">
+                                ₹ 500
+                            </span>
+
+                        </td>
+
+
+                        <td data-label="Action">
+
+                            <a
+                                th:href="@{'/order/details/' + ${order.id}}"
+                                class="view-btn">
+
+                                <i class="fa-solid fa-eye me-1"></i>
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- EMPTY -->
+
+                    <tr th:if="${#lists.isEmpty(completedOrders)}">
+
+                        <td colspan="6">
+
+                            <div class="empty-state">
+
+                                <i class="fa-solid fa-receipt"></i>
+
+                                <h5>
+                                    No Completed Orders
+                                </h5>
+
+                                <p>
+                                    Completed customer orders will appear here.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
 
         </div>
 
     </div>
 
 </div>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
 
 </body>
 

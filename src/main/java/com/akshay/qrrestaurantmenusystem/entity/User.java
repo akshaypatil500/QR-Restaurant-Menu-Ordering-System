@@ -10,29 +10,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 20)
-    private String role;
-
     @Column(nullable = false)
-    private boolean enabled = true;
+    private String role;
 
     public User() {
     }
 
-    public User(Long id, String username, String password,
-                String role, boolean enabled) {
-
+    public User(Long id, String username, String password, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -65,22 +59,5 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    @Override
-    public String toString() {
-
-        return "User [id=" + id
-                + ", username=" + username
-                + ", role=" + role
-                + ", enabled=" + enabled + "]";
     }
 }
