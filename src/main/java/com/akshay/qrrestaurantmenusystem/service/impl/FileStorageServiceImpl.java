@@ -52,6 +52,9 @@ public class FileStorageServiceImpl implements FileStorageService {
 
             File destinationFile =
                     new File(directory, fileName);
+            
+            //directory = src/main/resources/static/uploads/menu
+            // fileName  = 550e8400-e29b-41d4-a716-446655440000.jpg
 
             file.transferTo(destinationFile);
 

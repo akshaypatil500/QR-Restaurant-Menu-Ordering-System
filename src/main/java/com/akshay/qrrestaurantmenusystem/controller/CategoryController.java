@@ -13,18 +13,12 @@ import com.akshay.qrrestaurantmenusystem.service.CategoryService;
 @RequestMapping("/category")
 public class CategoryController {
 
-    // Constructor Injection
     private final CategoryService categoryService;
 
-    // Constructor
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
-    // ============================
-    // Show Add Category Page
-    // URL : /category/add
-    // ============================
     @GetMapping("/add")
     public String showAddPage(Model model) {
 
@@ -33,10 +27,6 @@ public class CategoryController {
         return "category/add-category";
     }
 
-    // ============================
-    // Save Category
-    // URL : /category/save
-    // ============================
     @PostMapping("/save")
     public String saveCategory(
             @ModelAttribute Category category,
@@ -60,10 +50,6 @@ public class CategoryController {
         return "redirect:/category/list";
     }
 
-    // ============================
-    // Display All Categories
-    // URL : /category/list
-    // ============================
     @GetMapping("/list")
     public String listCategory(Model model) {
 
@@ -74,26 +60,45 @@ public class CategoryController {
         return "category/categories";
     }
 
-    // ============================
-    // Edit Category
-    // URL : /category/edit/{id}
-    // ============================
     @GetMapping("/edit/{id}")
     public String editCategory(
             @PathVariable Long id,
             Model model) {
 
-        model.addAttribute(
-                "category",
-                categoryService.getCategoryById(id));
+        Category category =
+                categoryService.getCategoryById(id);
 
-        return "category/add-category";
+        if (category == null) {
+            return "redirect:/category/list";
+        }
+
+        model.addAttribute("category", category);
+
+        return "category/edit-category";
     }
+    
+    @PostMapping("/update")
+    public String updateCategory(
+            @ModelAttribute Category category,
+            RedirectAttributes redirectAttributes) {
 
-    // ============================
-    // Delete Category
-    // URL : /category/delete/{id}
-    // ============================
+        try {
+
+            categoryService.updateCategory(category);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Category updated successfully.");
+
+        } catch (RuntimeException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    e.getMessage());
+        }
+
+        return "redirect:/category/list";
+    }
     @GetMapping("/delete/{id}")
     public String deleteCategory(
             @PathVariable Long id,
@@ -117,4 +122,3 @@ public class CategoryController {
         return "redirect:/category/list";
     }
 }
-

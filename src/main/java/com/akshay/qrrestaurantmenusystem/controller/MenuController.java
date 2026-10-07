@@ -51,8 +51,8 @@ public class MenuController {
     @GetMapping("/add")
     public String showAddMenuPage(Model model) {
 
-        // Empty Menu object for form binding
-        model.addAttribute("menu", new Menu());
+    	// Add empty Menu object to Model for form association
+          model.addAttribute("menu", new Menu());
 
         // Send all categories for dropdown
         model.addAttribute(
@@ -79,6 +79,15 @@ public class MenuController {
 
             Model model) {
 
+        if (menu.getCategory() == null
+                || menu.getCategory().getId() == null) {
+
+            result.rejectValue(
+                    "category",
+                    "category.required",
+                    "Category is required");
+        }
+
         if (result.hasErrors()) {
 
             model.addAttribute(
@@ -92,7 +101,6 @@ public class MenuController {
 
         return "redirect:/menu/list";
     }
-
 
 
     // ==================================================
@@ -151,6 +159,15 @@ public class MenuController {
             @RequestParam("imageFile") MultipartFile imageFile,
 
             Model model) {
+
+        if (menu.getCategory() == null
+                || menu.getCategory().getId() == null) {
+
+            result.rejectValue(
+                    "category",
+                    "category.required",
+                    "Category is required");
+        }
 
         if (result.hasErrors()) {
 
