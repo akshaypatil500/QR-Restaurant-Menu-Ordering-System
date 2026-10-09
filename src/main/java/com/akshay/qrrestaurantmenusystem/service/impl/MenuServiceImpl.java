@@ -47,14 +47,23 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Menu saveMenu(Menu menu, MultipartFile imageFile) {
 
+        // Remove extra spaces from menu name
+        menu.setName(menu.getName().trim());
+
+        // Check duplicate menu name
+        if (menuRepository.existsByNameIgnoreCase(
+                menu.getName())) {
+
+            throw new RuntimeException(
+                    "Menu name already exists.");
+        }
+
         // Check image is uploaded or not
         if (imageFile != null && !imageFile.isEmpty()) {
 
-            // Save image and get generated file name
             String imageName =
                     fileStorageService.saveImage(imageFile);
 
-            // Store image name in Menu object
             menu.setImageName(imageName);
         }
 
@@ -63,44 +72,54 @@ public class MenuServiceImpl implements MenuService {
     }
 
 
-    // ==================================================
-    // Update Existing Menu
-    // ==================================================
+ // ==================================================
+ // Update Existing Menu
+ // ==================================================
 
-    @Override
-    public Menu updateMenu(Menu menu, MultipartFile imageFile) {
+ @Override
+ public Menu updateMenu(Menu menu, MultipartFile imageFile) {
 
-        Menu oldMenu = menuRepository.findById(menu.getId())
-                .orElseThrow(() ->
-                        new RuntimeException("Menu Not Found"));
+     // Find existing menu
+     Menu oldMenu = menuRepository.findById(menu.getId())
+             .orElseThrow(() ->
+                     new RuntimeException("Menu Not Found"));
 
+     // Remove extra spaces from menu name
+     menu.setName(menu.getName().trim());
 
-        // New image uploaded
-        if (imageFile != null && !imageFile.isEmpty()) {
+     // Check duplicate menu name
+     if (menuRepository.existsByNameIgnoreCaseAndIdNot(
+             menu.getName(), menu.getId())) {
 
-            // Delete old image
-            if (oldMenu.getImageName() != null) {
+         throw new RuntimeException(
+                 "Menu name already exists.");
+     }
 
-                fileStorageService.deleteImage(
-                        oldMenu.getImageName());
-            }
+     // New image uploaded
+     if (imageFile != null && !imageFile.isEmpty()) {
 
-            // Save new image
-            String imageName =
-                    fileStorageService.saveImage(imageFile);
+         // Delete old image
+         if (oldMenu.getImageName() != null) {
 
-            menu.setImageName(imageName);
+             fileStorageService.deleteImage(
+                     oldMenu.getImageName());
+         }
 
-        } else {
+         // Save new image
+         String imageName =
+                 fileStorageService.saveImage(imageFile);
 
-            // Keep old image
-            menu.setImageName(oldMenu.getImageName());
-        }
+         menu.setImageName(imageName);
 
+     } else {
 
-        return menuRepository.save(menu);
-    }
+         // Keep old image if no new image uploaded
+         menu.setImageName(oldMenu.getImageName());
+     }
 
+     // Update menu data in database
+     return menuRepository.save(menu);
+ }
 
     // ==================================================
     // Get All Menus

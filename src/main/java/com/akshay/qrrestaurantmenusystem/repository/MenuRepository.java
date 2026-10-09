@@ -10,13 +10,19 @@ import com.akshay.qrrestaurantmenusystem.entity.Menu;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    // Get only available menu items
-    List<Menu> findByAvailableTrue();
+	// Get only available menu items
+	List<Menu> findByAvailableTrue();
 
-    // Get Available Menus By Category
-    List<Menu> findByCategoryIdAndAvailableTrue(Long categoryId);
+	// Get Available Menus By Category
+	List<Menu> findByCategoryIdAndAvailableTrue(Long categoryId);
 
-    // Check whether a category contains any menu
-    boolean existsByCategoryId(Long categoryId);
+	// Check whether a category contains any menu
+	boolean existsByCategoryId(Long categoryId);
+
+	// Check duplicate menu name while adding
+	boolean existsByNameIgnoreCase(String name);
+
+	// Check duplicate menu name while updating
+	boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
+
 }
-

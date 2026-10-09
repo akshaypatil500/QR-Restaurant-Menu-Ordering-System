@@ -70,15 +70,12 @@ public class MenuController {
 
     @PostMapping("/save")
     public String saveMenu(
-
             @Valid @ModelAttribute("menu") Menu menu,
-
             BindingResult result,
-
             @RequestParam("imageFile") MultipartFile imageFile,
-
             Model model) {
 
+        // Check category selection
         if (menu.getCategory() == null
                 || menu.getCategory().getId() == null) {
 
@@ -88,18 +85,37 @@ public class MenuController {
                     "Category is required");
         }
 
+        // Check validation errors
         if (result.hasErrors()) {
-
-            model.addAttribute(
-                    "categories",
+            model.addAttribute("categories",
                     categoryService.getAllCategories());
 
             return "menu/add-menu";
         }
 
-        menuService.saveMenu(menu, imageFile);
+        try {
+            // Save menu
+            menuService.saveMenu(menu, imageFile);
 
-        return "redirect:/menu/list";
+            return "redirect:/menu/list";
+
+        } catch (RuntimeException e) {
+
+            if ("Menu name already exists.".equals(e.getMessage())) {
+
+                result.rejectValue(
+                        "name",
+                        "duplicate",
+                        "Menu name already exists.");
+
+                model.addAttribute("categories",
+                        categoryService.getAllCategories());
+
+                return "menu/add-menu";
+            }
+
+            throw e;
+        }
     }
 
 
@@ -151,15 +167,12 @@ public class MenuController {
 
     @PostMapping("/update")
     public String updateMenu(
-
             @Valid @ModelAttribute("menu") Menu menu,
-
             BindingResult result,
-
             @RequestParam("imageFile") MultipartFile imageFile,
-
             Model model) {
 
+        // Check category selection
         if (menu.getCategory() == null
                 || menu.getCategory().getId() == null) {
 
@@ -169,18 +182,37 @@ public class MenuController {
                     "Category is required");
         }
 
+        // Check validation errors
         if (result.hasErrors()) {
-
-            model.addAttribute(
-                    "categories",
+            model.addAttribute("categories",
                     categoryService.getAllCategories());
 
             return "menu/edit-menu";
         }
 
-        menuService.updateMenu(menu, imageFile);
+        try {
+            // Update menu
+            menuService.updateMenu(menu, imageFile);
 
-        return "redirect:/menu/list";
+            return "redirect:/menu/list";
+
+        } catch (RuntimeException e) {
+
+            if ("Menu name already exists.".equals(e.getMessage())) {
+
+                result.rejectValue(
+                        "name",
+                        "duplicate",
+                        "Menu name already exists.");
+
+                model.addAttribute("categories",
+                        categoryService.getAllCategories());
+
+                return "menu/edit-menu";
+            }
+
+            throw e;
+        }
     }
 
 
