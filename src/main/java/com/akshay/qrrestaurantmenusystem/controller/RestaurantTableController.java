@@ -1,3 +1,4 @@
+
 package com.akshay.qrrestaurantmenusystem.controller;
 
 import org.springframework.stereotype.Controller;
@@ -22,50 +23,59 @@ public class RestaurantTableController {
     private final RestaurantTableService tableService;
 
     // Constructor Injection
-    public RestaurantTableController(RestaurantTableService tableService) {
+    public RestaurantTableController(
+            RestaurantTableService tableService) {
         this.tableService = tableService;
     }
 
-    // ==========================================
     // SHOW ADD TABLE PAGE
-    // URL : /table/add
-    // ==========================================
-
     @GetMapping("/add")
     public String showAddTablePage(Model model) {
 
-        model.addAttribute("restaurantTable", new RestaurantTable());
+        model.addAttribute(
+                "restaurantTable",
+                new RestaurantTable());
 
         return "table/add-table";
     }
 
-    // ==========================================
     // SAVE TABLE
-    // ==========================================
-
     @PostMapping("/save")
     public String saveTable(
-
             @Valid
             @ModelAttribute("restaurantTable")
             RestaurantTable restaurantTable,
-
-            BindingResult result) {
+            BindingResult result,
+            Model model) {
 
         if (result.hasErrors()) {
-
             return "table/add-table";
         }
 
-        tableService.saveTable(restaurantTable);
+        try {
 
-        return "redirect:/table/list";
+            tableService.saveTable(restaurantTable);
+
+            return "redirect:/table/list";
+
+        } catch (RuntimeException e) {
+
+            if ("Table Number Already Exists."
+                    .equals(e.getMessage())) {
+
+                result.rejectValue(
+                        "tableNumber",
+                        "duplicate",
+                        "Table Number Already Exists.");
+
+                return "table/add-table";
+            }
+
+            throw e;
+        }
     }
 
-    // ==========================================
     // TABLE LIST
-    // ==========================================
-
     @GetMapping("/list")
     public String tableList(Model model) {
 
@@ -76,15 +86,10 @@ public class RestaurantTableController {
         return "table/table-list";
     }
 
-    // ==========================================
     // EDIT PAGE
-    // ==========================================
-
     @GetMapping("/edit/{id}")
     public String editTable(
-
             @PathVariable Long id,
-
             Model model) {
 
         model.addAttribute(
@@ -94,37 +99,46 @@ public class RestaurantTableController {
         return "table/edit-table";
     }
 
-    // ==========================================
     // UPDATE TABLE
-    // ==========================================
-
     @PostMapping("/update")
     public String updateTable(
-
             @Valid
             @ModelAttribute("restaurantTable")
             RestaurantTable restaurantTable,
-
             BindingResult result) {
 
         if (result.hasErrors()) {
-
             return "table/edit-table";
         }
 
-        tableService.updateTable(restaurantTable);
+        try {
 
-        return "redirect:/table/list";
+            tableService.updateTable(restaurantTable);
+
+            return "redirect:/table/list";
+
+        } catch (RuntimeException e) {
+
+            if ("Table Number Already Exists."
+                    .equals(e.getMessage())) {
+
+                result.rejectValue(
+                        "tableNumber",
+                        "duplicate",
+                        "Table Number Already Exists.");
+
+                return "table/edit-table";
+            }
+
+            throw e;
+        }
     }
 
-    // ==========================================
     // DELETE TABLE
-    // ==========================================
-
     @GetMapping("/delete/{id}")
     public String deleteTable(
             @PathVariable Long id,
-            org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
 
         try {
 
@@ -143,9 +157,11 @@ public class RestaurantTableController {
 
         return "redirect:/table/list";
     }
-    
+
+    // REGENERATE QR CODE
     @GetMapping("/regenerate-qr/{id}")
-    public String regenerateQRCode(@PathVariable Long id) {
+    public String regenerateQRCode(
+            @PathVariable Long id) {
 
         tableService.regenerateQRCode(id);
 

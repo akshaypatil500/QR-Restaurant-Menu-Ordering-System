@@ -1,9 +1,11 @@
+
 package com.akshay.qrrestaurantmenusystem.service.impl;
 
-import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.akshay.qrrestaurantmenusystem.service.QRCodeService;
@@ -15,34 +17,32 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 @Service
 public class QRCodeServiceImpl implements QRCodeService {
 
-    // QR Image Save Folder
-    private final String uploadDirectory =
-            "src/main/resources/static/uploads/qr/";
+    @Value("${app.qr.upload-dir:uploads/qr/}")
+    private String uploadDirectory;
 
     @Override
     public String generateQRCode(Long tableId) {
 
         try {
+            // QR image save folder
+            Path directory = Paths.get(uploadDirectory)
+                    .toAbsolutePath()
+                    .normalize();
 
-            // Create Folder if not exists
-            File directory = new File(uploadDirectory);
+            // Create folder if it does not exist
+            Files.createDirectories(directory);
 
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            // QR Content (Customer Menu URL)
+            // Customer menu URL
             String qrContent =
                     "http://localhost:8080/customer/menu/" + tableId;
 
-            // QR Image Name
-            String fileName =
-                    "table-" + tableId + ".png";
+            // QR image name
+            String fileName = "table-" + tableId + ".png";
 
-            // Full Path
-            Path path = Paths.get(uploadDirectory + fileName);
+            // Full image path
+            Path path = directory.resolve(fileName);
 
-            // Generate QR
+            // Generate QR code
             BitMatrix bitMatrix =
                     new MultiFormatWriter().encode(
                             qrContent,
@@ -50,23 +50,19 @@ public class QRCodeServiceImpl implements QRCodeService {
                             300,
                             300);
 
-            // Save PNG Image
+            // Save QR image
             MatrixToImageWriter.writeToPath(
                     bitMatrix,
                     "PNG",
                     path);
 
-            // Return File Name
+            // Return image filename
             return fileName;
 
         } catch (Exception e) {
-
             throw new RuntimeException(
                     "Unable to Generate QR Code",
                     e);
-
         }
-
     }
-
 }

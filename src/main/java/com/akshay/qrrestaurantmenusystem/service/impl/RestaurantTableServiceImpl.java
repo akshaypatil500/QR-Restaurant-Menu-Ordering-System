@@ -19,8 +19,7 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
     private final RestaurantOrderRepository orderRepository;
 
     // QR Image Folder
-    private final String qrDirectory =
-            "src/main/resources/static/uploads/qr/";
+    private final String qrDirectory = "uploads/qr/";
 
     // Constructor Injection
     public RestaurantTableServiceImpl(
